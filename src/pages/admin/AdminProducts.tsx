@@ -9,7 +9,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { Plus, Pencil, Trash2, Search, ChevronLeft, ChevronRight, X, PackagePlus, Package, Filter, MoreVertical, Eye, EyeOff, ToggleLeft, Image as ImageIcon } from 'lucide-react';
+import { Plus, Pencil, Trash2, Search, ChevronLeft, ChevronRight, X, PackagePlus, Package, Filter, MoreVertical, Eye, EyeOff, ToggleLeft, Image as ImageIcon, Sparkles, Loader2 } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
 import BulkUploadZone, { type FileItem } from '@/components/admin/BulkUploadZone';
@@ -126,6 +126,37 @@ const AdminProducts = () => {
     },
     onError: (err: Error) => toast({ title: 'Error', description: err.message, variant: 'destructive' }),
   });
+
+  const [removingBgId, setRemovingBgId] = useState<string | null>(null);
+  const removeBgMutation = useMutation({
+    mutationFn: async ({ id, image_url }: { id: string; image_url: string }) => {
+      setRemovingBgId(id);
+      const SUPA_URL = (import.meta as any).env.VITE_SUPABASE_URL;
+      const SUPA_KEY = (import.meta as any).env.VITE_SUPABASE_PUBLISHABLE_KEY || (import.meta as any).env.VITE_SUPABASE_ANON_KEY;
+      const resp = await fetch(`${SUPA_URL}/functions/v1/remove-bg`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(SUPA_KEY ? { Authorization: `Bearer ${SUPA_KEY}` } : {}),
+        },
+        body: JSON.stringify({ product_id: id, image_url }),
+      });
+      const data = await resp.json().catch(() => ({}));
+      if (!resp.ok) throw new Error(data?.error || `HTTP ${resp.status}`);
+      if (!data?.url) throw new Error('No image returned');
+      return data.url as string;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-products'] });
+      toast({ title: 'Background removed ✨' });
+      setRemovingBgId(null);
+    },
+    onError: (err: Error) => {
+      toast({ title: 'Failed to remove background', description: err.message, variant: 'destructive' });
+      setRemovingBgId(null);
+    },
+  });
+
 
   const bulkToggleStatusMutation = useMutation({
     mutationFn: async ({ ids, is_active }: { ids: string[]; is_active: boolean }) => {
@@ -489,6 +520,13 @@ const AdminProducts = () => {
                         <DropdownMenuItem onClick={(e) => { e.stopPropagation(); toggleStatusMutation.mutate({ id: prod.id, is_active: !prod.is_active }); }}>
                           {prod.is_active ? <EyeOff className="h-4 w-4 mr-2" /> : <Eye className="h-4 w-4 mr-2" />}
                           {prod.is_active ? 'Deactivate' : 'Activate'}
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          disabled={!prod.image_url || removingBgId === prod.id}
+                          onClick={(e) => { e.stopPropagation(); if (prod.image_url) removeBgMutation.mutate({ id: prod.id, image_url: prod.image_url }); }}
+                        >
+                          {removingBgId === prod.id ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Sparkles className="h-4 w-4 mr-2" />}
+                          {removingBgId === prod.id ? 'Removing BG...' : 'Remove Background'}
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
