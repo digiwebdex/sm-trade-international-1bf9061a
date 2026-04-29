@@ -150,19 +150,14 @@ const ContactSection = () => {
   return (
     <section
       id="contact"
-      className="py-20"
-      style={{
-        backgroundColor: '#f5efe2',
-        backgroundImage:
-          "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cpath d='M20 0l4 16 16 4-16 4-4 16-4-16-16-4 16-4z' fill='%23c9b176' fill-opacity='0.08'/%3E%3C/svg%3E\")",
-      }}
+      className="py-20 bg-background"
     >
       <div className="container mx-auto px-4">
         {/* Heading */}
         <div className="text-center mb-12">
           <p
             className="inline-flex items-center gap-2 text-sm font-medium tracking-wide uppercase mb-3"
-            style={{ color: '#c9a14a' }}
+            style={{ color: GOLD }}
           >
             <MessageSquare className="h-4 w-4" /> GET IN TOUCH
           </p>
@@ -172,7 +167,7 @@ const ContactSection = () => {
           >
             Contact Us
           </h2>
-          <p className="text-2xl mb-3" style={{ color: '#c9a14a' }} dir="rtl">
+          <p className="text-2xl mb-3" style={{ color: GOLD }} dir="rtl">
             اتصل بنا
           </p>
           <p className="max-w-2xl mx-auto text-muted-foreground text-sm md:text-base">
