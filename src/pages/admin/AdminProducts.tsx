@@ -521,6 +521,13 @@ const AdminProducts = () => {
                           {prod.is_active ? <EyeOff className="h-4 w-4 mr-2" /> : <Eye className="h-4 w-4 mr-2" />}
                           {prod.is_active ? 'Deactivate' : 'Activate'}
                         </DropdownMenuItem>
+                        <DropdownMenuItem
+                          disabled={!prod.image_url || removingBgId === prod.id}
+                          onClick={(e) => { e.stopPropagation(); if (prod.image_url) removeBgMutation.mutate({ id: prod.id, image_url: prod.image_url }); }}
+                        >
+                          {removingBgId === prod.id ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Sparkles className="h-4 w-4 mr-2" />}
+                          {removingBgId === prod.id ? 'Removing BG...' : 'Remove Background'}
+                        </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
                           className="text-destructive focus:text-destructive"
