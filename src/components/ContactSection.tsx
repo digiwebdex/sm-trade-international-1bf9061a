@@ -81,9 +81,10 @@ const ContactSection = () => {
     }
   };
 
-  // Brand green used by reference site
-  const GREEN = 'hsl(155, 55%, 22%)';
-  const GREEN_SOFT = 'hsl(155, 35%, 95%)';
+  // SM Trade International brand colors — Deep Navy + Warm Gold
+  const GREEN = 'hsl(215, 45%, 18%)'; // Deep Navy (primary)
+  const GREEN_SOFT = 'hsl(40, 45%, 94%)'; // Warm cream tint
+  const GOLD = 'hsl(38, 55%, 52%)'; // Warm Gold accent
 
   const infoCards = [
     {
@@ -149,19 +150,14 @@ const ContactSection = () => {
   return (
     <section
       id="contact"
-      className="py-20"
-      style={{
-        backgroundColor: '#f5efe2',
-        backgroundImage:
-          "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cpath d='M20 0l4 16 16 4-16 4-4 16-4-16-16-4 16-4z' fill='%23c9b176' fill-opacity='0.08'/%3E%3C/svg%3E\")",
-      }}
+      className="py-20 bg-background"
     >
       <div className="container mx-auto px-4">
         {/* Heading */}
         <div className="text-center mb-12">
           <p
             className="inline-flex items-center gap-2 text-sm font-medium tracking-wide uppercase mb-3"
-            style={{ color: '#c9a14a' }}
+            style={{ color: GOLD }}
           >
             <MessageSquare className="h-4 w-4" /> GET IN TOUCH
           </p>
@@ -171,7 +167,7 @@ const ContactSection = () => {
           >
             Contact Us
           </h2>
-          <p className="text-2xl mb-3" style={{ color: '#c9a14a' }} dir="rtl">
+          <p className="text-2xl mb-3" style={{ color: GOLD }} dir="rtl">
             اتصل بنا
           </p>
           <p className="max-w-2xl mx-auto text-muted-foreground text-sm md:text-base">
@@ -195,7 +191,7 @@ const ContactSection = () => {
                 >
                   <Icon className="h-4 w-4 text-white" />
                 </div>
-                <h3 className="font-semibold text-sm mb-2" style={{ color: '#c9a14a' }}>
+                <h3 className="font-semibold text-sm mb-2" style={{ color: GOLD }}>
                   {title}
                 </h3>
                 <div className="space-y-1 text-sm text-foreground/80">
@@ -229,16 +225,16 @@ const ContactSection = () => {
               Send us a Message
             </h3>
             <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <Label className="text-xs mb-1.5 block">Full Name *</Label>
+                <Input
+                  placeholder="Your full name"
+                  value={form.name}
+                  onChange={handleChange('name')}
+                  required
+                />
+              </div>
               <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <Label className="text-xs mb-1.5 block">Full Name *</Label>
-                  <Input
-                    placeholder="Your full name"
-                    value={form.name}
-                    onChange={handleChange('name')}
-                    required
-                  />
-                </div>
                 <div>
                   <Label className="text-xs mb-1.5 block">Phone *</Label>
                   <Input
@@ -249,15 +245,15 @@ const ContactSection = () => {
                     required
                   />
                 </div>
-              </div>
-              <div>
-                <Label className="text-xs mb-1.5 block">Email</Label>
-                <Input
-                  type="email"
-                  placeholder="you@example.com"
-                  value={form.email}
-                  onChange={handleChange('email')}
-                />
+                <div>
+                  <Label className="text-xs mb-1.5 block">Email</Label>
+                  <Input
+                    type="email"
+                    placeholder="you@example.com"
+                    value={form.email}
+                    onChange={handleChange('email')}
+                  />
+                </div>
               </div>
               <div>
                 <Label className="text-xs mb-1.5 block">Package Interest</Label>
@@ -311,7 +307,7 @@ const ContactSection = () => {
                 >
                   <Building2 className="h-4 w-4 text-white" />
                 </div>
-                <h3 className="font-semibold" style={{ color: '#c9a14a' }}>
+                <h3 className="font-semibold" style={{ color: GOLD }}>
                   {o.title}
                 </h3>
               </div>
