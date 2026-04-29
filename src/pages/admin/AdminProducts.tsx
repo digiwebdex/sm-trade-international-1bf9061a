@@ -156,16 +156,7 @@ const AdminProducts = () => {
       setRemovingBgId(null);
     },
   });
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['admin-products'] });
-      toast({ title: 'Background removed ✨' });
-      setRemovingBgId(null);
-    },
-    onError: (err: Error) => {
-      toast({ title: 'Failed to remove background', description: err.message, variant: 'destructive' });
-      setRemovingBgId(null);
-    },
-  });
+
 
   const bulkToggleStatusMutation = useMutation({
     mutationFn: async ({ ids, is_active }: { ids: string[]; is_active: boolean }) => {
