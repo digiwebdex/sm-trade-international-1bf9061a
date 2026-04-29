@@ -225,16 +225,16 @@ const ContactSection = () => {
               Send us a Message
             </h3>
             <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <Label className="text-xs mb-1.5 block">Full Name *</Label>
+                <Input
+                  placeholder="Your full name"
+                  value={form.name}
+                  onChange={handleChange('name')}
+                  required
+                />
+              </div>
               <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <Label className="text-xs mb-1.5 block">Full Name *</Label>
-                  <Input
-                    placeholder="Your full name"
-                    value={form.name}
-                    onChange={handleChange('name')}
-                    required
-                  />
-                </div>
                 <div>
                   <Label className="text-xs mb-1.5 block">Phone *</Label>
                   <Input
@@ -245,15 +245,15 @@ const ContactSection = () => {
                     required
                   />
                 </div>
-              </div>
-              <div>
-                <Label className="text-xs mb-1.5 block">Email</Label>
-                <Input
-                  type="email"
-                  placeholder="you@example.com"
-                  value={form.email}
-                  onChange={handleChange('email')}
-                />
+                <div>
+                  <Label className="text-xs mb-1.5 block">Email</Label>
+                  <Input
+                    type="email"
+                    placeholder="you@example.com"
+                    value={form.email}
+                    onChange={handleChange('email')}
+                  />
+                </div>
               </div>
               <div>
                 <Label className="text-xs mb-1.5 block">Package Interest</Label>
