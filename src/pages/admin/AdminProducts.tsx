@@ -131,13 +131,31 @@ const AdminProducts = () => {
   const removeBgMutation = useMutation({
     mutationFn: async ({ id, image_url }: { id: string; image_url: string }) => {
       setRemovingBgId(id);
-      const { data, error } = await supabase.functions.invoke('remove-bg', {
-        body: { product_id: id, image_url },
+      const SUPA_URL = (import.meta as any).env.VITE_SUPABASE_URL;
+      const SUPA_KEY = (import.meta as any).env.VITE_SUPABASE_PUBLISHABLE_KEY || (import.meta as any).env.VITE_SUPABASE_ANON_KEY;
+      const resp = await fetch(`${SUPA_URL}/functions/v1/remove-bg`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(SUPA_KEY ? { Authorization: `Bearer ${SUPA_KEY}` } : {}),
+        },
+        body: JSON.stringify({ product_id: id, image_url }),
       });
-      if (error) throw error;
-      if (!data?.url) throw new Error(data?.error || 'No image returned');
+      const data = await resp.json().catch(() => ({}));
+      if (!resp.ok) throw new Error(data?.error || `HTTP ${resp.status}`);
+      if (!data?.url) throw new Error('No image returned');
       return data.url as string;
     },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-products'] });
+      toast({ title: 'Background removed ✨' });
+      setRemovingBgId(null);
+    },
+    onError: (err: Error) => {
+      toast({ title: 'Failed to remove background', description: err.message, variant: 'destructive' });
+      setRemovingBgId(null);
+    },
+  });
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-products'] });
       toast({ title: 'Background removed ✨' });
