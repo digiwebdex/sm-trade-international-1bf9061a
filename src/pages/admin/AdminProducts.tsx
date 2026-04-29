@@ -127,6 +127,28 @@ const AdminProducts = () => {
     onError: (err: Error) => toast({ title: 'Error', description: err.message, variant: 'destructive' }),
   });
 
+  const [removingBgId, setRemovingBgId] = useState<string | null>(null);
+  const removeBgMutation = useMutation({
+    mutationFn: async ({ id, image_url }: { id: string; image_url: string }) => {
+      setRemovingBgId(id);
+      const { data, error } = await supabase.functions.invoke('remove-bg', {
+        body: { product_id: id, image_url },
+      });
+      if (error) throw error;
+      if (!data?.url) throw new Error(data?.error || 'No image returned');
+      return data.url as string;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-products'] });
+      toast({ title: 'Background removed ✨' });
+      setRemovingBgId(null);
+    },
+    onError: (err: Error) => {
+      toast({ title: 'Failed to remove background', description: err.message, variant: 'destructive' });
+      setRemovingBgId(null);
+    },
+  });
+
   const bulkToggleStatusMutation = useMutation({
     mutationFn: async ({ ids, is_active }: { ids: string[]; is_active: boolean }) => {
       for (const id of ids) {
