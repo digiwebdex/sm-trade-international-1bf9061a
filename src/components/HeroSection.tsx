@@ -45,7 +45,7 @@ const ProductCarousel = ({
   };
 
   return (
-    <div className="relative flex flex-col items-center justify-center" style={{ width: 440, height: 420 }}>
+    <div className="relative flex flex-col items-center justify-center" style={{ width: 580, height: 460 }}>
       {/* Cards */}
       <div className="relative w-full flex-1 flex items-center justify-center">
         {products.map((product, i) => {
@@ -54,11 +54,12 @@ const ProductCarousel = ({
           if (absOffset > 2) return null;
 
           const isActive = offset === 0;
-          const translateX = offset * 130;
+          // Active card: 260×340, side cards smaller
+          const translateX = offset * 170;
           const translateZ = isActive ? 60 : absOffset === 1 ? -20 : -80;
           const rotateY = offset * -25;
-          const scale = isActive ? 1 : absOffset === 1 ? 0.82 : 0.65;
-          const opacity = isActive ? 1 : absOffset === 1 ? 0.7 : 0.4;
+          const scale = isActive ? 1 : absOffset === 1 ? 0.72 : 0.55;
+          const opacity = isActive ? 1 : absOffset === 1 ? 0.65 : 0.35;
           const zIndex = 10 - absOffset;
 
           return (
@@ -66,8 +67,8 @@ const ProductCarousel = ({
               key={product.id}
               className="absolute cursor-pointer"
               style={{
-                width: 180,
-                height: 260,
+                width: 260,
+                height: 360,
                 transform: `perspective(1000px) translateX(${translateX}px) translateZ(${translateZ}px) rotateY(${rotateY}deg) scale(${scale})`,
                 opacity,
                 zIndex,
@@ -83,15 +84,15 @@ const ProductCarousel = ({
                 }
                 bg-gradient-to-b from-[hsl(222,40%,14%)] to-[hsl(222,47%,8%)]`}
               >
-                {/* Image area */}
-                <div className="flex-1 flex items-center justify-center p-4 relative overflow-hidden">
+                {/* Image area — bigger */}
+                <div className="flex-1 flex items-center justify-center p-5 relative overflow-hidden">
                   {isActive && (
-                    <div className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--sm-gold)/0.08)] to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--sm-gold)/0.10)] via-transparent to-transparent" />
                   )}
                   <OptimizedImage
                     src={product.image_url || '/placeholder.svg'}
                     alt={lang === 'zh' ? (product.name_zh || product.name_bn || product.name_en) : lang === 'en' ? product.name_en : product.name_bn}
-                    className="max-w-full max-h-full object-contain relative z-[1] drop-shadow-[0_4px_16px_rgba(0,0,0,0.4)]"
+                    className="max-w-full max-h-full object-contain relative z-[1] drop-shadow-[0_8px_24px_rgba(0,0,0,0.6)]"
                   />
                 </div>
 
@@ -101,7 +102,7 @@ const ProductCarousel = ({
                     ? 'border-[hsl(var(--sm-gold)/0.3)] bg-gradient-to-t from-black/40 to-transparent'
                     : 'border-white/5 bg-black/20'
                 }`}>
-                  <h3 className={`text-[11px] font-bold truncate tracking-wider uppercase transition-colors duration-500 ${
+                  <h3 className={`text-[12px] font-bold truncate tracking-wider uppercase transition-colors duration-500 ${
                     isActive ? 'text-[hsl(var(--sm-gold))]' : 'text-white/50'
                   }`}>
                     {lang === 'zh' ? (product.name_zh || product.name_bn || product.name_en) : lang === 'en' ? product.name_en : (product.name_bn || product.name_en)}
