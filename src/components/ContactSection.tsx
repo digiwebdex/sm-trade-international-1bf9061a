@@ -191,7 +191,7 @@ const ContactSection = () => {
                 >
                   <Icon className="h-4 w-4 text-white" />
                 </div>
-                <h3 className="font-semibold text-sm mb-2" style={{ color: '#c9a14a' }}>
+                <h3 className="font-semibold text-sm mb-2" style={{ color: GOLD }}>
                   {title}
                 </h3>
                 <div className="space-y-1 text-sm text-foreground/80">
@@ -307,7 +307,7 @@ const ContactSection = () => {
                 >
                   <Building2 className="h-4 w-4 text-white" />
                 </div>
-                <h3 className="font-semibold" style={{ color: '#c9a14a' }}>
+                <h3 className="font-semibold" style={{ color: GOLD }}>
                   {o.title}
                 </h3>
               </div>
