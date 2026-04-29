@@ -1,0 +1,69 @@
+
+INSERT INTO site_settings (setting_key, setting_value)
+VALUES (
+  'contact_section',
+  '{
+    "eyebrow": "GET IN TOUCH",
+    "heading": "Contact Us",
+    "heading_arabic": "اتصل بنا",
+    "subheading": "Ready to start your sacred journey? Contact us today for personalized assistance with your Hajj or Umrah booking.",
+    "form_title": "Send us a Message",
+    "office_locations_title": "Our Office Locations",
+    "info_cards": [
+      {
+        "title": "Call us",
+        "icon": "Phone",
+        "lines": [
+          {"label": "Hotline:", "value": "+8801867666888", "href": "tel:+8801867666888"},
+          {"label": "Telephone:", "value": "+8802224446664", "href": "tel:+8802224446664"}
+        ]
+      },
+      {
+        "title": "Email Us",
+        "icon": "Mail",
+        "lines": [
+          {"label": "", "value": "info@smelitehajj.com", "href": "mailto:info@smelitehajj.com"},
+          {"label": "", "value": "support@smelitehajj.com", "href": "mailto:support@smelitehajj.com"}
+        ]
+      },
+      {
+        "title": "Visit Us",
+        "icon": "MapPin",
+        "lines": [
+          {"label": "", "value": "B-25/4, Al-Baraka Super Market,", "href": ""},
+          {"label": "", "value": "Savar Bazar Bus-Stand,", "href": ""},
+          {"label": "", "value": "Savar, Dhaka-1340", "href": ""}
+        ]
+      },
+      {
+        "title": "Office Hours",
+        "icon": "Clock",
+        "lines": [
+          {"label": "", "value": "Saturday to Thursday 7:00 AM to 5:00 PM", "href": ""},
+          {"label": "Friday:", "value": "Holiday", "href": ""}
+        ]
+      }
+    ],
+    "offices": [
+      {
+        "title": "Banani Office",
+        "address": "House # 37, Block # C, Road # 6, Banani, Dhaka-1213.",
+        "phones": ["+88 01867666888", "+88 01619959625"],
+        "email": "info@smelitehajj.com",
+        "mapsEmbed": "https://www.google.com/maps?q=House+37+Block+C+Road+6+Banani+Dhaka+1213&output=embed",
+        "mapsLink": "https://maps.app.goo.gl/REta67KKkDk2w1Sw7"
+      },
+      {
+        "title": "Savar Office",
+        "address": "B-25/4, Al-Baraka Super Market, Savar Bazar Bus-Stand, Savar, Dhaka-1340.",
+        "phones": ["+88 02224446664", "+88 01619959626"],
+        "email": "support@smelitehajj.com",
+        "mapsEmbed": "https://www.google.com/maps?q=Al-Baraka+Super+Market+Savar+Bazar+Bus+Stand+Savar+Dhaka+1340&output=embed",
+        "mapsLink": "https://maps.app.goo.gl/d1Tr5J5xi8so64fs7"
+      }
+    ]
+  }'::jsonb
+)
+ON CONFLICT (setting_key) DO UPDATE
+SET setting_value = EXCLUDED.setting_value,
+    updated_at = now();
