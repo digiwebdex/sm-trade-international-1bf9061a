@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/lib/apiClient';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -23,17 +24,52 @@ import {
   MessageSquare,
 } from 'lucide-react';
 
-/**
- * ContactSection — replica of smelitehajj.com Contact Us layout.
- * 4 small info cards (Call us / Email Us / Visit Us / Office Hours)
- * + right-side message form, plus two office cards with embedded Google Maps.
- *
- * NOTE: All copy here intentionally mirrors the reference site verbatim per
- * the user's request ("সবকিছু হুবুহু"). Do not run translate-everything on
- * this file's strings — they should remain in English / Arabic as shown.
- */
+const ICON_MAP: Record<string, any> = { Phone, Mail, MapPin, Clock, Building2, MessageSquare };
+
+interface InfoLine { label: string; value: string; href: string }
+interface InfoCard { title: string; icon: string; lines: InfoLine[] }
+interface Office {
+  title: string; address: string; phones: string[]; email: string;
+  mapsEmbed: string; mapsLink: string;
+}
+interface ContactSectionData {
+  eyebrow: string;
+  heading: string;
+  heading_arabic: string;
+  subheading: string;
+  form_title: string;
+  office_locations_title: string;
+  info_cards: InfoCard[];
+  offices: Office[];
+}
+
+const FALLBACK: ContactSectionData = {
+  eyebrow: 'GET IN TOUCH',
+  heading: 'Contact Us',
+  heading_arabic: 'اتصل بنا',
+  subheading: 'Ready to start your sacred journey? Contact us today for personalized assistance with your Hajj or Umrah booking.',
+  form_title: 'Send us a Message',
+  office_locations_title: 'Our Office Locations',
+  info_cards: [],
+  offices: [],
+};
+
 const ContactSection = () => {
   const { toast } = useToast();
+
+  const { data: cs = FALLBACK } = useQuery({
+    queryKey: ['site-settings-contact-section'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('site_settings')
+        .select('*')
+        .eq('setting_key', 'contact_section')
+        .maybeSingle();
+      if (error) throw error;
+      const v = (data?.setting_value as unknown as Partial<ContactSectionData>) || {};
+      return { ...FALLBACK, ...v } as ContactSectionData;
+    },
+  });
 
   const [form, setForm] = useState({
     name: '',
@@ -82,76 +118,12 @@ const ContactSection = () => {
   };
 
   // SM Trade International brand colors — Deep Navy + Warm Gold
-  const GREEN = 'hsl(215, 45%, 18%)'; // Deep Navy (primary)
-  const GREEN_SOFT = 'hsl(40, 45%, 94%)'; // Warm cream tint
-  const GOLD = 'hsl(38, 55%, 52%)'; // Warm Gold accent
-
-  const infoCards = [
-    {
-      icon: Phone,
-      title: 'Call us',
-      lines: [
-        { label: 'Hotline:', value: '+8801867666888', href: 'tel:+8801867666888' },
-        { label: 'Telephone:', value: '+8802224446664', href: 'tel:+8802224446664' },
-      ],
-    },
-    {
-      icon: Mail,
-      title: 'Email Us',
-      lines: [
-        { label: '', value: 'info@smelitehajj.com', href: 'mailto:info@smelitehajj.com' },
-        { label: '', value: 'support@smelitehajj.com', href: 'mailto:support@smelitehajj.com' },
-      ],
-    },
-    {
-      icon: MapPin,
-      title: 'Visit Us',
-      lines: [
-        {
-          label: '',
-          value: 'B-25/4, Al-Baraka Super Market, Savar Bazar Bus-Stand, Savar, Dhaka-1340',
-          href: '',
-        },
-      ],
-    },
-    {
-      icon: Clock,
-      title: 'Office Hours',
-      lines: [
-        { label: '', value: 'Saturday to Thursday 7:00 AM to 5:00 PM', href: '' },
-        { label: '', value: 'Friday: Holiday', href: '' },
-      ],
-    },
-  ];
-
-  const offices = [
-    {
-      title: 'Banani Office',
-      address: 'House # 37, Block # C, Road # 6, Banani, Dhaka-1213.',
-      phones: ['+88 01867666888', '+88 01619959625'],
-      email: 'info@smelitehajj.com',
-      mapsEmbed:
-        'https://www.google.com/maps?q=House+37+Block+C+Road+6+Banani+Dhaka&output=embed',
-      mapsLink: 'https://maps.google.com/?q=House+37+Block+C+Road+6+Banani+Dhaka-1213',
-    },
-    {
-      title: 'Savar Office',
-      address:
-        'B-25/4, Al-Baraka Super Market, Savar Bazar Bus-Stand, Savar, Dhaka-1340.',
-      phones: ['+88 02224446664', '+88 01619959626'],
-      email: 'support@smelitehajj.com',
-      mapsEmbed:
-        'https://www.google.com/maps?q=Al-Baraka+Super+Market+Savar+Bazar+Bus+Stand+Dhaka&output=embed',
-      mapsLink:
-        'https://maps.google.com/?q=Al-Baraka+Super+Market+Savar+Bazar+Bus+Stand+Dhaka-1340',
-    },
-  ];
+  const GREEN = 'hsl(215, 45%, 18%)';
+  const GREEN_SOFT = 'hsl(40, 45%, 94%)';
+  const GOLD = 'hsl(38, 55%, 52%)';
 
   return (
-    <section
-      id="contact"
-      className="py-20 bg-background"
-    >
+    <section id="contact" className="py-20 bg-background">
       <div className="container mx-auto px-4">
         {/* Heading */}
         <div className="text-center mb-12">
@@ -159,20 +131,21 @@ const ContactSection = () => {
             className="inline-flex items-center gap-2 text-sm font-medium tracking-wide uppercase mb-3"
             style={{ color: GOLD }}
           >
-            <MessageSquare className="h-4 w-4" /> GET IN TOUCH
+            <MessageSquare className="h-4 w-4" /> {cs.eyebrow}
           </p>
           <h2
             className="text-4xl md:text-5xl font-semibold mb-2"
             style={{ color: GREEN, fontFamily: 'Cormorant Garamond, serif' }}
           >
-            Contact Us
+            {cs.heading}
           </h2>
-          <p className="text-2xl mb-3" style={{ color: GOLD }} dir="rtl">
-            اتصل بنا
-          </p>
+          {cs.heading_arabic && (
+            <p className="text-2xl mb-3" style={{ color: GOLD }} dir="rtl">
+              {cs.heading_arabic}
+            </p>
+          )}
           <p className="max-w-2xl mx-auto text-muted-foreground text-sm md:text-base">
-            Ready to start your sacred journey? Contact us today for personalized
-            assistance with your Hajj or Umrah booking.
+            {cs.subheading}
           </p>
         </div>
 
@@ -180,40 +153,41 @@ const ContactSection = () => {
         <div className="grid lg:grid-cols-2 gap-6 max-w-6xl mx-auto">
           {/* Info cards 2x2 */}
           <div className="grid sm:grid-cols-2 gap-4 content-start">
-            {infoCards.map(({ icon: Icon, title, lines }) => (
-              <div
-                key={title}
-                className="bg-white rounded-lg p-5 shadow-sm border border-black/5"
-              >
+            {cs.info_cards.map((card, idx) => {
+              const Icon = ICON_MAP[card.icon] || Phone;
+              return (
                 <div
-                  className="w-9 h-9 rounded-md flex items-center justify-center mb-3"
-                  style={{ backgroundColor: GREEN }}
+                  key={idx}
+                  className="bg-white rounded-lg p-5 shadow-sm border border-black/5"
                 >
-                  <Icon className="h-4 w-4 text-white" />
+                  <div
+                    className="w-9 h-9 rounded-md flex items-center justify-center mb-3"
+                    style={{ backgroundColor: GREEN }}
+                  >
+                    <Icon className="h-4 w-4 text-white" />
+                  </div>
+                  <h3 className="font-semibold text-sm mb-2" style={{ color: GOLD }}>
+                    {card.title}
+                  </h3>
+                  <div className="space-y-1 text-sm text-foreground/80">
+                    {card.lines.map((l, i) => (
+                      <div key={i}>
+                        {l.label && (
+                          <span className="text-xs text-muted-foreground mr-1">
+                            {l.label}
+                          </span>
+                        )}
+                        {l.href ? (
+                          <a href={l.href} className="hover:underline">{l.value}</a>
+                        ) : (
+                          <span>{l.value}</span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <h3 className="font-semibold text-sm mb-2" style={{ color: GOLD }}>
-                  {title}
-                </h3>
-                <div className="space-y-1 text-sm text-foreground/80">
-                  {lines.map((l, i) => (
-                    <div key={i}>
-                      {l.label && (
-                        <span className="text-xs text-muted-foreground mr-1">
-                          {l.label}
-                        </span>
-                      )}
-                      {l.href ? (
-                        <a href={l.href} className="hover:underline">
-                          {l.value}
-                        </a>
-                      ) : (
-                        <span>{l.value}</span>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           {/* Form */}
@@ -222,7 +196,7 @@ const ContactSection = () => {
               className="text-xl font-semibold mb-5"
               style={{ color: GREEN, fontFamily: 'Cormorant Garamond, serif' }}
             >
-              Send us a Message
+              {cs.form_title}
             </h3>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
@@ -295,9 +269,9 @@ const ContactSection = () => {
 
         {/* Office cards: address + phone + email */}
         <div className="grid md:grid-cols-2 gap-4 max-w-6xl mx-auto mt-6">
-          {offices.map((o) => (
+          {cs.offices.map((o, idx) => (
             <div
-              key={o.title}
+              key={idx}
               className="bg-white rounded-lg p-5 shadow-sm border border-black/5"
             >
               <div className="flex items-center gap-2 mb-3">
@@ -307,9 +281,7 @@ const ContactSection = () => {
                 >
                   <Building2 className="h-4 w-4 text-white" />
                 </div>
-                <h3 className="font-semibold" style={{ color: GOLD }}>
-                  {o.title}
-                </h3>
+                <h3 className="font-semibold" style={{ color: GOLD }}>{o.title}</h3>
               </div>
               <div className="space-y-1.5 text-sm text-foreground/80">
                 <div className="flex items-start gap-2">
@@ -319,66 +291,67 @@ const ContactSection = () => {
                 {o.phones.map((p) => (
                   <div key={p} className="flex items-start gap-2">
                     <Phone className="h-4 w-4 mt-0.5 shrink-0" style={{ color: GREEN }} />
-                    <a href={`tel:${p.replace(/\s/g, '')}`} className="hover:underline">
-                      {p}
-                    </a>
+                    <a href={`tel:${p.replace(/\s/g, '')}`} className="hover:underline">{p}</a>
                   </div>
                 ))}
-                <div className="flex items-start gap-2">
-                  <Mail className="h-4 w-4 mt-0.5 shrink-0" style={{ color: GREEN }} />
-                  <a href={`mailto:${o.email}`} className="hover:underline">
-                    {o.email}
-                  </a>
-                </div>
+                {o.email && (
+                  <div className="flex items-start gap-2">
+                    <Mail className="h-4 w-4 mt-0.5 shrink-0" style={{ color: GREEN }} />
+                    <a href={`mailto:${o.email}`} className="hover:underline">{o.email}</a>
+                  </div>
+                )}
               </div>
             </div>
           ))}
         </div>
 
         {/* Office locations + maps */}
-        <div className="max-w-6xl mx-auto mt-8">
-          <div
-            className="rounded-lg p-4 mb-4"
-            style={{ backgroundColor: GREEN_SOFT }}
-          >
-            <h3 className="font-semibold flex items-center gap-2" style={{ color: GREEN }}>
-              <MapPin className="h-4 w-4" /> Our Office Locations
-            </h3>
-          </div>
-          <div className="grid md:grid-cols-2 gap-4">
-            {offices.map((o) => (
-              <div
-                key={o.title}
-                className="bg-white rounded-lg overflow-hidden shadow-sm border border-black/5"
-              >
-                <div className="px-4 py-3 flex items-center justify-between border-b border-black/5">
-                  <span className="font-medium text-sm" style={{ color: GREEN }}>
-                    📍 {o.title}
-                  </span>
-                  <a
-                    href={o.mapsLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-xs inline-flex items-center gap-1 hover:underline"
-                    style={{ color: GREEN }}
-                  >
-                    Open in Maps <ExternalLink className="h-3 w-3" />
-                  </a>
+        {cs.offices.length > 0 && (
+          <div className="max-w-6xl mx-auto mt-8">
+            <div className="rounded-lg p-4 mb-4" style={{ backgroundColor: GREEN_SOFT }}>
+              <h3 className="font-semibold flex items-center gap-2" style={{ color: GREEN }}>
+                <MapPin className="h-4 w-4" /> {cs.office_locations_title}
+              </h3>
+            </div>
+            <div className="grid md:grid-cols-2 gap-4">
+              {cs.offices.map((o, idx) => (
+                <div
+                  key={idx}
+                  className="bg-white rounded-lg overflow-hidden shadow-sm border border-black/5"
+                >
+                  <div className="px-4 py-3 flex items-center justify-between border-b border-black/5">
+                    <span className="font-medium text-sm" style={{ color: GREEN }}>
+                      📍 {o.title}
+                    </span>
+                    {o.mapsLink && (
+                      <a
+                        href={o.mapsLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs inline-flex items-center gap-1 hover:underline"
+                        style={{ color: GREEN }}
+                      >
+                        Open in Maps <ExternalLink className="h-3 w-3" />
+                      </a>
+                    )}
+                  </div>
+                  {o.mapsEmbed && (
+                    <iframe
+                      src={o.mapsEmbed}
+                      width="100%"
+                      height="260"
+                      style={{ border: 0 }}
+                      allowFullScreen
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                      title={`${o.title} Map`}
+                    />
+                  )}
                 </div>
-                <iframe
-                  src={o.mapsEmbed}
-                  width="100%"
-                  height="260"
-                  style={{ border: 0 }}
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title={`${o.title} Map`}
-                />
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </section>
   );
