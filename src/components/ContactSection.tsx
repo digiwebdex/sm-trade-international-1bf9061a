@@ -121,10 +121,20 @@ const ContactSection = () => {
   const GREEN = 'hsl(215, 45%, 18%)';
   const GREEN_SOFT = 'hsl(40, 45%, 94%)';
   const GOLD = 'hsl(38, 55%, 52%)';
+  const CREAM = 'hsl(40, 50%, 96%)';
 
   return (
-    <section id="contact" className="py-20 bg-background">
-      <div className="container mx-auto px-4">
+    <section
+      id="contact"
+      className="py-20 relative"
+      style={{
+        backgroundColor: CREAM,
+        backgroundImage:
+          "radial-gradient(circle at 1px 1px, hsl(38, 55%, 52%, 0.08) 1px, transparent 0)",
+        backgroundSize: '24px 24px',
+      }}
+    >
+      <div className="container mx-auto px-4 relative">
         {/* Heading */}
         <div className="text-center mb-12">
           <p
