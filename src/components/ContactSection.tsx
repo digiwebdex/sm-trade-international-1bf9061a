@@ -81,9 +81,10 @@ const ContactSection = () => {
     }
   };
 
-  // Brand green used by reference site
-  const GREEN = 'hsl(155, 55%, 22%)';
-  const GREEN_SOFT = 'hsl(155, 35%, 95%)';
+  // SM Trade International brand colors — Deep Navy + Warm Gold
+  const GREEN = 'hsl(215, 45%, 18%)'; // Deep Navy (primary)
+  const GREEN_SOFT = 'hsl(40, 45%, 94%)'; // Warm cream tint
+  const GOLD = 'hsl(38, 55%, 52%)'; // Warm Gold accent
 
   const infoCards = [
     {
