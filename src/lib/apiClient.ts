@@ -61,6 +61,19 @@ let authToken: string | null = localStorage.getItem('auth_token');
 let currentUser: { id: string; email: string } | null = null;
 const authListeners: Set<(user: typeof currentUser) => void> = new Set();
 
+function safeParseStoredUser(raw: string | null): { id: string; email: string } | null {
+  if (!raw || raw === 'undefined' || raw === 'null') return null;
+  try {
+    const parsed = JSON.parse(raw);
+    if (parsed && typeof parsed === 'object' && typeof parsed.id === 'string' && typeof parsed.email === 'string') {
+      return parsed;
+    }
+  } catch {
+    localStorage.removeItem('auth_user');
+  }
+  return null;
+}
+
 function getHeaders(): Record<string, string> {
   const h: Record<string, string> = { 'Content-Type': 'application/json' };
   if (authToken) h['Authorization'] = `Bearer ${authToken}`;
@@ -540,10 +553,10 @@ const auth = {
 
   async getSession() {
     const token = localStorage.getItem('auth_token');
-    const user = localStorage.getItem('auth_user');
+    const user = safeParseStoredUser(localStorage.getItem('auth_user'));
     if (token && user) {
       authToken = token;
-      currentUser = JSON.parse(user);
+      currentUser = user;
       try {
         const resp = await fetch(`${API_BASE}/auth/me`, { headers: { Authorization: `Bearer ${token}` } });
         if (!resp.ok) throw new Error('Token expired');
@@ -556,10 +569,10 @@ const auth = {
   },
 
   onAuthStateChange(callback: (event: string, session: any) => void) {
-    const vpsUser = localStorage.getItem('auth_user');
+    const vpsUser = safeParseStoredUser(localStorage.getItem('auth_user'));
     const vpsToken = localStorage.getItem('auth_token');
     if (vpsUser && vpsToken) {
-      currentUser = JSON.parse(vpsUser);
+      currentUser = vpsUser;
       setTimeout(() => callback('SIGNED_IN', { user: currentUser, access_token: vpsToken }), 0);
     }
 
