@@ -8,7 +8,7 @@ set -e
 DB_NAME="${DB_NAME:-smtrade_db}"
 DB_USER="${DB_USER:-smtrade_user}"
 DB_HOST="${DB_HOST:-localhost}"
-DB_PORT="${DB_PORT:-5432}"
+DB_PORT="${DB_PORT:-5440}"
 ADMIN_EMAIL="${ADMIN_EMAIL:-admin@smtradeint.com}"
 ADMIN_PASSWORD="${ADMIN_PASSWORD:-changeme123}"
 
