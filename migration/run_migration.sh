@@ -8,7 +8,7 @@ set -e
 DB_NAME="${DB_NAME:-smtrade_db}"
 DB_USER="${DB_USER:-smtrade_user}"
 DB_HOST="${DB_HOST:-localhost}"
-DB_PORT="${DB_PORT:-5432}"
+DB_PORT="${DB_PORT:-5440}"
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 DB_DIR="$SCRIPT_DIR/../database"
