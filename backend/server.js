@@ -18,7 +18,7 @@ const sendQuoteEmailRoutes = require('./routes/sendQuoteEmail');
 const translateRoutes = require('./routes/translate');
 
 const app = express();
-const PORT = parseInt(process.env.PORT || '4000', 10);
+const PORT = parseInt(process.env.PORT || '3011', 10);
 
 // ── Middleware ───────────────────────────────────────────────
 app.use(cors({
@@ -96,7 +96,7 @@ app.get('*', (_req, res) => {
 // ── Start ───────────────────────────────────────────────────
 app.listen(PORT, '0.0.0.0', () => {
   const dbHost = process.env.DB_HOST || 'localhost';
-  const dbPort = parseInt(process.env.DB_PORT || '5432', 10);
+  const dbPort = parseInt(process.env.DB_PORT || '5440', 10);
   const dbName = process.env.DB_NAME || 'smtrade_db';
   console.log(`🗄️ DB target ${dbHost}:${dbPort}/${dbName}`);
   console.log(`✅ SM Trade API running on port ${PORT}`);
