@@ -184,6 +184,7 @@ const AdminProductEditor = () => {
         short_description_bn: form.short_description_bn,
         category_id: form.category_id || null,
         image_url: form.image_url,
+        video_url: form.video_url || null,
         is_active: form.is_active,
         product_code: form.product_code || slugify(form.name_en),
         unit_price: form.unit_price,
