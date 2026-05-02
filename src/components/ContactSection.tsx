@@ -167,7 +167,7 @@ const ContactSection = () => {
 
         {/* Info cards — wide 4-column row on desktop */}
         <div className="max-w-6xl mx-auto mb-8">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {cs.info_cards.map((card, idx) => {
               const Icon = ICON_MAP[card.icon] || Phone;
               return (
