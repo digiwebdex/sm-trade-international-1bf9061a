@@ -185,7 +185,7 @@ const Footer = () => {
               transitionDelay: '150ms',
             }}
           >
-            <h4 className="font-bold mb-4 text-lg relative inline-block" style={{ fontFamily: 'DM Sans, sans-serif' }}>
+            <h4 className="font-bold mb-4 text-lg relative inline-block whitespace-nowrap" style={{ fontFamily: 'DM Sans, sans-serif' }}>
               <span className="text-[hsl(var(--sm-gold))]/50 mr-2">—</span>
               {quicklinksTitle}
             </h4>
