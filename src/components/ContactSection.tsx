@@ -228,22 +228,6 @@ const ContactSection = () => {
                 </div>
               </div>
               <div>
-                <Label className="text-xs mb-1.5 block">Package Interest</Label>
-                <Select
-                  value={form.package}
-                  onValueChange={(v) => setForm((f) => ({ ...f, package: v }))}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a package" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Visa Processing">Visa Processing</SelectItem>
-                    <SelectItem value="Air Ticket">Air Ticket</SelectItem>
-                    <SelectItem value="Hotel Booking">Hotel Booking</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
                 <Label className="text-xs mb-1.5 block">Message</Label>
                 <Textarea
                   rows={4}
