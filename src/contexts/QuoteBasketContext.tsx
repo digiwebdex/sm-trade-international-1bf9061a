@@ -8,6 +8,7 @@ export interface BasketItem {
   category: string;
   quantity: number;
   unitPrice?: number;
+  productCode?: string;
 }
 
 interface QuoteBasketContextType {

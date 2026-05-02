@@ -30,13 +30,20 @@ const QuoteBasketDrawer = () => {
   };
 
   const getWhatsAppUrl = () => {
-    const itemsList = items.map((item, i) =>
-      `${i + 1}. ${title(item)} (Qty: ${item.quantity})`
-    ).join('\n');
+    const grandTotal = items.reduce((s, i: any) => s + (i.unitPrice || 0) * i.quantity, 0);
+    const itemsList = items.map((item: any, i) => {
+      const code = item.productCode ? ` [${item.productCode}]` : '';
+      const price = item.unitPrice > 0 ? ` — ৳${Number(item.unitPrice).toLocaleString()} × ${item.quantity} = ৳${(item.unitPrice * item.quantity).toLocaleString()}` : ` — Qty: ${item.quantity}`;
+      return `${i + 1}. ${title(item)}${code}${price}`;
+    }).join('\n');
+
+    const totalLine = grandTotal > 0
+      ? (lang === 'en' ? `\n\nTotal: ৳${grandTotal.toLocaleString()}` : `\n\nমোট: ৳${grandTotal.toLocaleString()}`)
+      : '';
 
     const message = lang === 'en'
-      ? `Hi, I'd like to request a quote for the following products:\n\n${itemsList}\n\nPlease share pricing and customization details.`
-      : `হ্যালো, আমি নিম্নলিখিত পণ্যগুলির জন্য কোটেশন চাই:\n\n${itemsList}\n\nদয়া করে মূল্য ও কাস্টমাইজেশনের বিবরণ জানাবেন।`;
+      ? `Hi, I'd like to request a quote for the following products:\n\n${itemsList}${totalLine}\n\nPlease share pricing and customization details.`
+      : `হ্যালো, আমি নিম্নলিখিত পণ্যগুলির জন্য কোটেশন চাই:\n\n${itemsList}${totalLine}\n\nদয়া করে মূল্য ও কাস্টমাইজেশনের বিবরণ জানাবেন।`;
 
     return `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
   };
