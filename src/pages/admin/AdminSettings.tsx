@@ -16,7 +16,7 @@ type SettingsMap = Record<string, Record<string, string>>;
 const defaultSettings: Record<string, SettingsMap> = {
   branding: {
     company_name: { en: 'S. M. Trade International', bn: 'এস. এম. ট্রেড ইন্টারন্যাশনাল' },
-    tagline: { en: 'Premium Corporate Gifts', bn: 'প্রিমিয়াম কর্পোরেট গিফট' },
+    tagline: { en: '1st Class Govt. Contractor, Supplier & Importer', bn: '১ম শ্রেণির সরকারি ঠিকাদার, সরবরাহকারী ও আমদানিকারক' },
     topbar_badge: { en: '1st Class Govt. Contractor, Supplier & Importer', bn: '১ম শ্রেণীর সরকারি ঠিকাদার, সরবরাহকারী ও আমদানিকারক' },
     credit_text: { en: 'Digitally Crafted by Digiwebdex.com', bn: 'Digitally Crafted by Digiwebdex.com' },
     credit_url: { en: 'https://digiwebdex.com', bn: 'https://digiwebdex.com' },
