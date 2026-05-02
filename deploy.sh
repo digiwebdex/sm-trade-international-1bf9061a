@@ -46,10 +46,10 @@ if pm2 describe smtrade-api >/dev/null 2>&1; then
 fi
 
 if pm2 describe sm-trade-backend >/dev/null 2>&1; then
-  pm2 restart sm-trade-backend --update-env
-else
-  pm2 start /var/www/sm-trade-international/ecosystem.config.cjs --only sm-trade-backend --update-env
+  pm2 delete sm-trade-backend
 fi
+
+pm2 start /var/www/sm-trade-international/ecosystem.config.cjs --only sm-trade-backend --update-env
 
 echo "💾 Saving PM2 process list..."
 pm2 save
