@@ -91,17 +91,26 @@ const AdminContactInfo = () => {
 
   useEffect(() => {
     if (settings) {
+      // Helper: pick string from trilingual object {en,bn,zh} or plain string
+      const pick = (v: any): string => {
+        if (v == null) return '';
+        if (typeof v === 'string') return v;
+        if (typeof v === 'object') return v.en || v.bn || v.zh || '';
+        return String(v);
+      };
       setForm({
-        phone: settings.phone?.en || settings.phone || '',
-        email: settings.email?.en || settings.email || '',
-        address: settings.address?.en || settings.address || '',
-        address_bn: settings.address?.bn || settings.address_bn || '',
-        whatsapp_number: settings.whatsapp_number?.en || settings.whatsapp_number || '',
-        facebook: settings.facebook?.en || settings.facebook || '',
-        linkedin: settings.linkedin?.en || settings.linkedin || '',
-        instagram: settings.instagram?.en || settings.instagram || '',
-        twitter: settings.twitter?.en || settings.twitter || '',
-        youtube: settings.youtube?.en || settings.youtube || '',
+        phone: pick(settings.phone),
+        email: pick(settings.email),
+        address: pick(settings.address),
+        address_bn:
+          (settings.address && typeof settings.address === 'object' && (settings.address as any).bn) ||
+          pick(settings.address_bn),
+        whatsapp_number: pick(settings.whatsapp_number),
+        facebook: pick(settings.facebook),
+        linkedin: pick(settings.linkedin),
+        instagram: pick(settings.instagram),
+        twitter: pick(settings.twitter),
+        youtube: pick(settings.youtube),
       });
     }
   }, [settings]);
