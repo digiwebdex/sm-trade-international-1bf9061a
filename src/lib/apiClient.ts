@@ -442,7 +442,7 @@ class QueryBuilder {
       if (method === 'update') {
         // Special case: site_settings backend exposes only POST upsert (no PATCH).
         // Redirect update().eq('setting_key', ...) to POST /site-settings with full payload.
-        if (this._table === 'site_settings') {
+        if (this.table === 'site_settings') {
           const keyFilter = this._filters.find(f => f.column === 'setting_key' && f.op === 'eq');
           if (keyFilter) {
             const upsertBody = {
