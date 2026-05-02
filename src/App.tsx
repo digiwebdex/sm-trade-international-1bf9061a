@@ -56,13 +56,13 @@ const AdminTranslations = lazy(() => import("./pages/admin/AdminTranslations"));
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      // Stable data — no automatic background changes
-      staleTime: 30 * 60 * 1000,        // 30 min – treat data as fresh
-      gcTime: 60 * 60 * 1000,           // 1 hour garbage collection
-      refetchOnWindowFocus: false,      // no refetch on tab focus
-      refetchOnReconnect: false,        // no refetch on network reconnect
-      refetchOnMount: false,            // no refetch when component remounts
-      refetchInterval: false,           // no polling
+      // Keep pages stable, but fetch fresh content again on revisit/remount
+      staleTime: 60 * 1000,
+      gcTime: 15 * 60 * 1000,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: true,
+      refetchOnMount: 'always',
+      refetchInterval: false,
       retry: 1,
     },
   },
