@@ -440,6 +440,30 @@ class QueryBuilder {
 
       // ── UPDATE ──
       if (method === 'update') {
+        // Special case: site_settings backend exposes only POST upsert (no PATCH).
+        // Redirect update().eq('setting_key', ...) to POST /site-settings with full payload.
+        if (this._table === 'site_settings') {
+          const keyFilter = this._filters.find(f => f.column === 'setting_key' && f.op === 'eq');
+          if (keyFilter) {
+            const upsertBody = {
+              setting_key: keyFilter.value,
+              setting_value: (this._payload as any)?.setting_value ?? this._payload,
+            };
+            const resp = await fetch(`${API_BASE}/${routeName}`, {
+              method: 'POST',
+              headers: getHeaders(),
+              body: JSON.stringify(upsertBody),
+            });
+            if (!resp.ok) {
+              const errBody = await resp.json().catch(() => ({}));
+              return { data: null, error: { message: errBody.error || `HTTP ${resp.status}` } };
+            }
+            let data = await resp.json().catch(() => null);
+            if (data) data = normalizeRowAssets(data);
+            return { data, error: null };
+          }
+        }
+
         // Find the row ID from filters
         const idFilter = this._filters.find(f => f.column === 'id' && f.op === 'eq');
         let updateUrl = `${API_BASE}/${routeName}`;
