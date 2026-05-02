@@ -58,7 +58,9 @@ const AdminProductEditor = () => {
   const [savedId, setSavedId] = useState<string | null>(id || null);
   const [activeTab, setActiveTab] = useState('basic');
   const [dragOver, setDragOver] = useState(false);
+  const [videoUploading, setVideoUploading] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+  const videoRef = useRef<HTMLInputElement>(null);
 
   // Fetch product if editing
   const { data: product, isLoading: productLoading } = useQuery({
