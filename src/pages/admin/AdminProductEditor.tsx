@@ -100,6 +100,7 @@ const AdminProductEditor = () => {
         short_description_bn: (product as any).short_description_bn || '',
         category_id: product.category_id || '',
         image_url: product.image_url || '',
+        video_url: (product as any).video_url || '',
         is_active: product.is_active,
         product_code: (product as any).product_code || '',
         unit_price: Number((product as any).unit_price) || 0,
