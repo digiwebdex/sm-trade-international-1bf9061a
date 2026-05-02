@@ -149,7 +149,7 @@ const Footer = () => {
                 </span>
               </div>
             </div>
-            <p className="text-primary-foreground/60 text-sm leading-relaxed mb-6">{desc}</p>
+            <p className="text-white text-sm leading-relaxed mb-6">{desc}</p>
 
             {/* Social Icons */}
             <div className="flex items-center gap-3">
@@ -163,13 +163,13 @@ const Footer = () => {
                     className="w-10 h-10 rounded-full bg-primary-foreground/10 border border-primary-foreground/15 flex items-center justify-center hover:bg-[hsl(var(--sm-gold))] hover:border-[hsl(var(--sm-gold))] hover:scale-110 transition-all duration-300 group"
                     title={social.platform}
                   >
-                    <social.Icon className="h-4 w-4 text-primary-foreground/60 group-hover:text-[hsl(var(--sm-green-dark))]" />
+                    <social.Icon className="h-4 w-4 text-white group-hover:text-[hsl(var(--sm-green-dark))]" />
                   </a>
                 ))
               ) : (
                 [Facebook, Linkedin, Instagram, Youtube].map((Icon, i) => (
                   <span key={i} className="w-10 h-10 rounded-full bg-primary-foreground/10 border border-primary-foreground/15 flex items-center justify-center">
-                    <Icon className="h-4 w-4 text-primary-foreground/40" />
+                    <Icon className="h-4 w-4 text-white/85" />
                   </span>
                 ))
               )}
@@ -196,7 +196,7 @@ const Footer = () => {
                   : lang === 'bn' && item.label_bn
                     ? item.label_bn
                     : item.label_en;
-                const cls = "flex items-center gap-2 text-primary-foreground/60 hover:text-[hsl(var(--sm-gold))] text-sm transition-all duration-300 group";
+                const cls = "flex items-center gap-2 text-white hover:text-[hsl(var(--sm-gold))] text-sm transition-all duration-300 group";
                 const dot = <span className="w-1.5 h-1.5 rounded-full bg-[hsl(var(--sm-gold))]/50 group-hover:bg-[hsl(var(--sm-gold))] transition-colors" />;
                 return item.isRoute ? (
                   <Link key={idx} to={item.href} className={cls}>{dot}{label}</Link>
@@ -220,7 +220,7 @@ const Footer = () => {
               <span className="text-[hsl(var(--sm-gold))]/50 mr-2">—</span>
               {contactTitle}
             </h4>
-            <div className="space-y-5 text-sm text-primary-foreground/60 mt-2">
+            <div className="space-y-5 text-sm text-white mt-2">
               {/* Savar Office */}
               <div>
                 <span className="text-[hsl(var(--sm-gold))] font-semibold text-xs uppercase tracking-wider block mb-1">
@@ -275,7 +275,7 @@ const Footer = () => {
               <span className="text-[hsl(var(--sm-gold))]/50 mr-2">—</span>
               {tt('Phone Numbers', 'ফোন নম্বর', '电话号码')}
             </h4>
-            <div className="space-y-2.5 text-sm text-primary-foreground/60 mt-2">
+            <div className="space-y-2.5 text-sm text-white mt-2">
               {[
                 '+02224446664',
                 '+8801867666888',
@@ -307,11 +307,11 @@ const Footer = () => {
             transitionDelay: '600ms',
           }}
         >
-          <span className="text-primary-foreground/40 text-sm">
+          <span className="text-white/85 text-sm">
             © {new Date().getFullYear()} {companyName}. {copyright}
           </span>
           {creditText && (
-            <span className="text-primary-foreground/40 text-sm italic">
+            <span className="text-white/85 text-sm italic">
               {creditUrl ? (
                 <a href={creditUrl} target="_blank" rel="noopener noreferrer" className="hover:text-[hsl(var(--sm-gold))] transition-colors duration-300">
                   {creditText}
