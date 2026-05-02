@@ -46,8 +46,8 @@ npm run preview
 
 ```bash
 # Start backend
-cd /var/www/sm-trade-international/backend
-pm2 start server.js --name sm-trade-backend
+cd /var/www/sm-trade-international
+pm2 start ecosystem.config.cjs --only sm-trade-backend
 
 # Restart backend (with fresh env vars)
 pm2 restart sm-trade-backend --update-env
@@ -195,7 +195,7 @@ systemctl restart postgresql
 
 # Kill stuck process
 pm2 delete sm-trade-backend
-pm2 start /var/www/sm-trade-international/backend/server.js --name sm-trade-backend
+pm2 start /var/www/sm-trade-international/ecosystem.config.cjs --only sm-trade-backend
 
 # Check error logs
 pm2 logs sm-trade-backend --err --lines 100
