@@ -122,17 +122,14 @@ const AdminContactInfo = () => {
   }, [sectionData]);
 
   const upsertSetting = async (key: string, payload: any) => {
-    const { data: existing } = await supabase
-      .from('site_settings').select('id').eq('setting_key', key).maybeSingle();
-    if (existing) {
-      const { error } = await supabase
-        .from('site_settings').update({ setting_value: payload as Json }).eq('setting_key', key);
-      if (error) throw error;
-    } else {
-      const { error } = await supabase
-        .from('site_settings').insert({ setting_key: key, setting_value: payload as Json });
-      if (error) throw error;
-    }
+    const { error } = await supabase
+      .from('site_settings')
+      .upsert({
+        setting_key: key,
+        setting_value: payload as Json,
+      });
+
+    if (error) throw error;
   };
 
   const saveMutation = useMutation({
