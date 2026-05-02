@@ -204,9 +204,9 @@ const ContactSection = () => {
                   </h3>
                   <div className="space-y-1.5 text-sm text-foreground/80 leading-relaxed">
                     {card.lines.map((l, i) => (
-                      <div key={i} className="flex flex-wrap gap-x-1">
+                      <div key={i} className="flex items-baseline gap-2">
                         {l.label && (
-                          <span className="text-[11px] uppercase tracking-wider text-muted-foreground font-semibold">
+                          <span className="text-[11px] uppercase tracking-wider text-muted-foreground font-semibold shrink-0 w-20">
                             {l.label}
                           </span>
                         )}
