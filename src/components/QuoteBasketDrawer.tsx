@@ -231,6 +231,11 @@ const QuoteBasketDrawer = () => {
                       </div>
                       <div className="flex-1 min-w-0">
                         <h4 className="text-sm font-semibold truncate">{title(item)}</h4>
+                        {(item as any).productCode && (
+                          <div className="text-[11px] text-muted-foreground mt-0.5">
+                            {lang === 'en' ? 'Product Code' : 'প্রোডাক্ট কোড'}: <span className="font-mono font-semibold text-foreground">{(item as any).productCode}</span>
+                          </div>
+                        )}
                         {price > 0 && (
                           <div className="text-xs text-muted-foreground mt-0.5">
                             ৳{price.toLocaleString()} <span className="opacity-60">×</span> {item.quantity} = <span className="font-semibold text-foreground">৳{lineTotal.toLocaleString()}</span>
