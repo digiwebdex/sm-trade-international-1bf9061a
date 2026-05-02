@@ -148,6 +148,86 @@ const ProductCarousel = ({
   );
 };
 
+/* ─── Mobile Product Carousel (auto-sliding, swipeable) ─── */
+const MobileProductCarousel = ({
+  products,
+  lang,
+  onProductClick,
+}: {
+  products: Array<{ id: string; name_en: string; name_bn: string; name_zh?: string; image_url: string | null; product_code: string | null; category_id: string | null; unit_price: number }>;
+  lang: string;
+  onProductClick: (product: any) => void;
+}) => {
+  const [activeIdx, setActiveIdx] = useState(0);
+  const count = products.length;
+  const touchStartX = useRef(0);
+  const touchDelta = useRef(0);
+
+  useEffect(() => {
+    if (count < 2) return;
+    const timer = setInterval(() => setActiveIdx(i => (i + 1) % count), CUBE_SPEED);
+    return () => clearInterval(timer);
+  }, [count]);
+
+  if (count === 0) return null;
+
+  const goNext = () => setActiveIdx(i => (i + 1) % count);
+  const goPrev = () => setActiveIdx(i => (i - 1 + count) % count);
+
+  const onTS = (e: TouchEvent) => { touchStartX.current = e.touches[0].clientX; touchDelta.current = 0; };
+  const onTM = (e: TouchEvent) => { touchDelta.current = e.touches[0].clientX - touchStartX.current; };
+  const onTE = () => { if (touchDelta.current > 50) goPrev(); else if (touchDelta.current < -50) goNext(); };
+
+  return (
+    <div className="w-full flex flex-col items-center" onTouchStart={onTS} onTouchMove={onTM} onTouchEnd={onTE}>
+      <div className="relative w-full overflow-hidden">
+        <div
+          className="flex transition-transform duration-700 ease-out"
+          style={{ transform: `translateX(-${activeIdx * 100}%)` }}
+        >
+          {products.map((product) => (
+            <div key={product.id} className="w-full shrink-0 flex justify-center px-4">
+              <div
+                onClick={() => onProductClick(product)}
+                className="w-[220px] h-[300px] rounded-lg overflow-hidden cursor-pointer flex flex-col bg-gradient-to-b from-[hsl(222,40%,14%)] to-[hsl(222,47%,8%)] border-2 border-[hsl(var(--sm-gold)/0.5)] shadow-[0_0_30px_hsl(var(--sm-gold)/0.18),0_15px_40px_rgba(0,0,0,0.5)]"
+              >
+                <div className="flex-1 flex items-center justify-center p-4 relative overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-br from-[hsl(var(--sm-gold)/0.10)] via-transparent to-transparent" />
+                  <OptimizedImage
+                    src={product.image_url || '/placeholder.svg'}
+                    alt={lang === 'zh' ? (product.name_zh || product.name_bn || product.name_en) : lang === 'en' ? product.name_en : product.name_bn}
+                    className="max-w-full max-h-full object-contain relative z-[1] drop-shadow-[0_8px_24px_rgba(0,0,0,0.6)]"
+                  />
+                </div>
+                <div className="px-3 py-3 text-center border-t border-[hsl(var(--sm-gold)/0.3)] bg-gradient-to-t from-black/40 to-transparent">
+                  <h3 className="text-[12px] font-bold truncate tracking-wider uppercase text-[hsl(var(--sm-gold))]">
+                    {lang === 'zh' ? (product.name_zh || product.name_bn || product.name_en) : lang === 'en' ? product.name_en : (product.name_bn || product.name_en)}
+                  </h3>
+                  {product.product_code && (
+                    <p className="text-[9px] text-white/40 mt-0.5 tracking-widest">{product.product_code}</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Dots */}
+      <div className="flex items-center gap-2 mt-4">
+        {products.map((_, i) => (
+          <button key={i} onClick={() => setActiveIdx(i)} aria-label={`Product ${i + 1}`}
+            className={`rounded-full transition-all duration-500 ${
+              i === activeIdx
+                ? 'w-6 h-1.5 bg-gradient-to-r from-[hsl(var(--sm-gold))] to-[hsl(var(--sm-gold)/0.4)] shadow-[0_0_10px_hsl(var(--sm-gold)/0.4)]'
+                : 'w-1.5 h-1.5 bg-white/20 hover:bg-white/40'
+            }`} />
+        ))}
+      </div>
+    </div>
+  );
+};
+
 /* ─── Main Hero Section — Luxury Premium ─── */
 const HeroSection = () => {
   const { lang } = useLanguage();
