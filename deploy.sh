@@ -41,6 +41,10 @@ echo "🔨 Building frontend..."
 npm run build
 
 echo "♻️ Restarting backend..."
+if pm2 describe smtrade-api >/dev/null 2>&1; then
+  pm2 delete smtrade-api
+fi
+
 if pm2 describe sm-trade-backend >/dev/null 2>&1; then
   pm2 restart sm-trade-backend --update-env
 else
