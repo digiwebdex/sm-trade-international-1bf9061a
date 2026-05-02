@@ -94,8 +94,8 @@ const ProductImageGallery = ({
   }, [goNext, goPrev]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!isZoomed) return;
     const rect = e.currentTarget.getBoundingClientRect();
+    setBoxSize({ w: rect.width, h: rect.height });
     setZoomPos({
       x: ((e.clientX - rect.left) / rect.width) * 100,
       y: ((e.clientY - rect.top) / rect.height) * 100,
