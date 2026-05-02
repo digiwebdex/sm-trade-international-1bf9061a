@@ -149,11 +149,6 @@ const ContactSection = () => {
           >
             {cs.heading}
           </h2>
-          {cs.heading_arabic && (
-            <p className="text-2xl mb-3" style={{ color: GOLD }} dir="rtl">
-              {cs.heading_arabic}
-            </p>
-          )}
           <p className="max-w-2xl mx-auto text-muted-foreground text-sm md:text-base">
             {cs.subheading}
           </p>
