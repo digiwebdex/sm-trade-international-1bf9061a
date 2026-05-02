@@ -50,6 +50,13 @@ const ProductImageGallery = ({
   const [zoomPos, setZoomPos] = useState({ x: 50, y: 50 });
   const [fade, setFade] = useState(true);
   const touchStart = useRef<number | null>(null);
+  const imageBoxRef = useRef<HTMLDivElement>(null);
+  const [boxSize, setBoxSize] = useState({ w: 0, h: 0 });
+
+  // Amazon-style zoom config
+  const ZOOM_LEVEL = 2.5;
+  const LENS_SIZE = 160; // px square lens
+  const PANEL_SIZE = 480; // px square external preview
 
   useEffect(() => {
     setFade(false);
