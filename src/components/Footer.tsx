@@ -113,9 +113,9 @@ const Footer = () => {
             loading="lazy"
           />
         )}
-        {/* Deeper dark overlay for clear text legibility */}
-        <div className="absolute inset-0 bg-[hsl(var(--sm-green-dark))]/90" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[hsl(var(--sm-black))]/80 via-[hsl(var(--sm-black))]/55 to-[hsl(var(--sm-black))]/40" />
+        {/* Lighter overlay so background image stays visible */}
+        <div className="absolute inset-0 bg-[hsl(var(--sm-green-dark))]/65" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[hsl(var(--sm-black))]/55 via-[hsl(var(--sm-black))]/30 to-[hsl(var(--sm-black))]/15" />
       </div>
 
       {/* Subtle pattern overlay */}
@@ -126,12 +126,12 @@ const Footer = () => {
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-14 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-12 gap-y-10 lg:gap-x-16 xl:gap-x-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-x-12 gap-y-10 lg:gap-x-20 xl:gap-x-24">
 
 
           {/* Column 1: Company Info */}
           <div
-            className="transition-all duration-700"
+            className="lg:col-span-4 transition-all duration-700"
             style={{
               opacity: isVisible ? 1 : 0,
               transform: isVisible ? 'translateY(0)' : 'translateY(30px)',
@@ -178,7 +178,7 @@ const Footer = () => {
 
           {/* Column 2: Quick Links */}
           <div
-            className="transition-all duration-700"
+            className="lg:col-span-2 lg:pl-6 transition-all duration-700"
             style={{
               opacity: isVisible ? 1 : 0,
               transform: isVisible ? 'translateY(0)' : 'translateY(30px)',
@@ -209,7 +209,7 @@ const Footer = () => {
 
           {/* Column 3: Contact Info */}
           <div
-            className="transition-all duration-700"
+            className="lg:col-span-3 transition-all duration-700"
             style={{
               opacity: isVisible ? 1 : 0,
               transform: isVisible ? 'translateY(0)' : 'translateY(30px)',
@@ -264,7 +264,7 @@ const Footer = () => {
 
           {/* Column 4: Phone Numbers */}
           <div
-            className="transition-all duration-700"
+            className="lg:col-span-3 transition-all duration-700"
             style={{
               opacity: isVisible ? 1 : 0,
               transform: isVisible ? 'translateY(0)' : 'translateY(30px)',
