@@ -165,38 +165,56 @@ const ContactSection = () => {
           </p>
         </div>
 
-        {/* Top: 4 info cards (left) + form (right) */}
-        <div className="grid lg:grid-cols-2 gap-6 max-w-6xl mx-auto">
-          {/* Info cards 2x2 */}
-          <div className="grid sm:grid-cols-2 gap-4 content-start">
+        {/* Info cards — wide 4-column row on desktop */}
+        <div className="max-w-6xl mx-auto mb-8">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {cs.info_cards.map((card, idx) => {
               const Icon = ICON_MAP[card.icon] || Phone;
               return (
                 <div
                   key={idx}
-                  className="bg-white rounded-lg p-5 shadow-sm border border-black/5"
+                  className="group relative bg-white rounded-2xl p-6 shadow-[0_2px_12px_rgba(0,0,0,0.04)] border border-black/5 hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 overflow-hidden"
                 >
+                  {/* Top gold accent bar */}
                   <div
-                    className="w-9 h-9 rounded-md flex items-center justify-center mb-3"
-                    style={{ backgroundColor: GREEN }}
+                    className="absolute top-0 left-0 right-0 h-[3px] opacity-80"
+                    style={{ background: `linear-gradient(90deg, ${GOLD}, ${GREEN})` }}
+                  />
+                  {/* Decorative corner glow */}
+                  <div
+                    className="absolute -top-10 -right-10 w-24 h-24 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                    style={{ background: `radial-gradient(circle, ${GOLD}33, transparent 70%)` }}
+                  />
+                  <div
+                    className="relative w-12 h-12 rounded-xl flex items-center justify-center mb-4 shadow-md group-hover:scale-110 transition-transform duration-300"
+                    style={{ background: `linear-gradient(135deg, ${GREEN}, hsl(215, 50%, 28%))` }}
                   >
-                    <Icon className="h-4 w-4 text-white" />
+                    <Icon className="h-5 w-5 text-white" />
+                    <span
+                      className="absolute -bottom-1 -right-1 w-3 h-3 rounded-full border-2 border-white"
+                      style={{ backgroundColor: GOLD }}
+                    />
                   </div>
-                  <h3 className="font-bold text-lg md:text-xl mb-2 tracking-tight" style={{ color: GOLD }}>
+                  <h3
+                    className="font-bold text-lg md:text-xl mb-3 tracking-tight"
+                    style={{ color: GOLD, fontFamily: 'Cormorant Garamond, serif' }}
+                  >
                     {card.title}
                   </h3>
-                  <div className="space-y-1 text-sm text-foreground/80">
+                  <div className="space-y-1.5 text-sm text-foreground/80 leading-relaxed">
                     {card.lines.map((l, i) => (
-                      <div key={i}>
+                      <div key={i} className="flex flex-wrap gap-x-1">
                         {l.label && (
-                          <span className="text-xs text-muted-foreground mr-1">
+                          <span className="text-[11px] uppercase tracking-wider text-muted-foreground font-semibold">
                             {l.label}
                           </span>
                         )}
                         {l.href ? (
-                          <a href={l.href} className="hover:underline">{l.value}</a>
+                          <a href={l.href} className="hover:underline font-medium" style={{ color: GREEN }}>
+                            {l.value}
+                          </a>
                         ) : (
-                          <span>{l.value}</span>
+                          <span className="font-medium">{l.value}</span>
                         )}
                       </div>
                     ))}
@@ -205,9 +223,16 @@ const ContactSection = () => {
               );
             })}
           </div>
+        </div>
 
+        {/* Form + Offices side by side */}
+        <div className="grid lg:grid-cols-2 gap-6 max-w-6xl mx-auto">
           {/* Form */}
-          <div className="bg-white rounded-lg p-6 md:p-8 shadow-sm border border-black/5">
+          <div className="relative bg-white rounded-2xl p-6 md:p-8 shadow-[0_2px_12px_rgba(0,0,0,0.04)] border border-black/5 overflow-hidden">
+            <div
+              className="absolute top-0 left-0 right-0 h-[3px]"
+              style={{ background: `linear-gradient(90deg, ${GOLD}, ${GREEN})` }}
+            />
             <h3
               className="text-2xl md:text-3xl font-bold mb-5 tracking-tight"
               style={{ color: GREEN, fontFamily: 'Cormorant Garamond, serif' }}
