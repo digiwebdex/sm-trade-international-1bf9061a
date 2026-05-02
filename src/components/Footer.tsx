@@ -103,19 +103,19 @@ const Footer = () => {
             playsInline
             preload="auto"
             poster={footerBgImage}
-            className="w-full h-full object-cover opacity-80"
+            className="w-full h-full object-cover opacity-50"
           />
         ) : (
           <img
             src={footerBgImage}
             alt=""
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover opacity-50"
             loading="lazy"
           />
         )}
-        {/* Dark overlay with brand tint */}
-        <div className="absolute inset-0 bg-[hsl(var(--sm-green-dark))]/72" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[hsl(var(--sm-black))]/45 via-transparent to-[hsl(var(--sm-black))]/15" />
+        {/* Deeper dark overlay for clear text legibility */}
+        <div className="absolute inset-0 bg-[hsl(var(--sm-green-dark))]/90" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[hsl(var(--sm-black))]/80 via-[hsl(var(--sm-black))]/55 to-[hsl(var(--sm-black))]/40" />
       </div>
 
       {/* Subtle pattern overlay */}
@@ -126,7 +126,8 @@ const Footer = () => {
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-14 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-12 gap-y-10 lg:gap-x-16 xl:gap-x-20">
+
 
           {/* Column 1: Company Info */}
           <div
@@ -148,7 +149,7 @@ const Footer = () => {
                 </span>
               </div>
             </div>
-            <p className="text-primary-foreground/60 text-sm leading-relaxed mb-6">{desc}</p>
+            <p className="text-white text-sm leading-relaxed mb-6">{desc}</p>
 
             {/* Social Icons */}
             <div className="flex items-center gap-3">
@@ -162,13 +163,13 @@ const Footer = () => {
                     className="w-10 h-10 rounded-full bg-primary-foreground/10 border border-primary-foreground/15 flex items-center justify-center hover:bg-[hsl(var(--sm-gold))] hover:border-[hsl(var(--sm-gold))] hover:scale-110 transition-all duration-300 group"
                     title={social.platform}
                   >
-                    <social.Icon className="h-4 w-4 text-primary-foreground/60 group-hover:text-[hsl(var(--sm-green-dark))]" />
+                    <social.Icon className="h-4 w-4 text-white group-hover:text-[hsl(var(--sm-green-dark))]" />
                   </a>
                 ))
               ) : (
                 [Facebook, Linkedin, Instagram, Youtube].map((Icon, i) => (
                   <span key={i} className="w-10 h-10 rounded-full bg-primary-foreground/10 border border-primary-foreground/15 flex items-center justify-center">
-                    <Icon className="h-4 w-4 text-primary-foreground/40" />
+                    <Icon className="h-4 w-4 text-white/85" />
                   </span>
                 ))
               )}
@@ -195,7 +196,7 @@ const Footer = () => {
                   : lang === 'bn' && item.label_bn
                     ? item.label_bn
                     : item.label_en;
-                const cls = "flex items-center gap-2 text-primary-foreground/60 hover:text-[hsl(var(--sm-gold))] text-sm transition-all duration-300 group";
+                const cls = "flex items-center gap-2 text-white hover:text-[hsl(var(--sm-gold))] text-sm transition-all duration-300 group";
                 const dot = <span className="w-1.5 h-1.5 rounded-full bg-[hsl(var(--sm-gold))]/50 group-hover:bg-[hsl(var(--sm-gold))] transition-colors" />;
                 return item.isRoute ? (
                   <Link key={idx} to={item.href} className={cls}>{dot}{label}</Link>
@@ -219,7 +220,7 @@ const Footer = () => {
               <span className="text-[hsl(var(--sm-gold))]/50 mr-2">—</span>
               {contactTitle}
             </h4>
-            <div className="space-y-5 text-sm text-primary-foreground/60 mt-2">
+            <div className="space-y-5 text-sm text-white mt-2">
               {/* Savar Office */}
               <div>
                 <span className="text-[hsl(var(--sm-gold))] font-semibold text-xs uppercase tracking-wider block mb-1">
@@ -274,7 +275,7 @@ const Footer = () => {
               <span className="text-[hsl(var(--sm-gold))]/50 mr-2">—</span>
               {tt('Phone Numbers', 'ফোন নম্বর', '电话号码')}
             </h4>
-            <div className="space-y-2.5 text-sm text-primary-foreground/60 mt-2">
+            <div className="space-y-2.5 text-sm text-white mt-2">
               {[
                 '+02224446664',
                 '+8801867666888',
@@ -306,11 +307,11 @@ const Footer = () => {
             transitionDelay: '600ms',
           }}
         >
-          <span className="text-primary-foreground/40 text-sm">
+          <span className="text-white/85 text-sm">
             © {new Date().getFullYear()} {companyName}. {copyright}
           </span>
           {creditText && (
-            <span className="text-primary-foreground/40 text-sm italic">
+            <span className="text-white/85 text-sm italic">
               {creditUrl ? (
                 <a href={creditUrl} target="_blank" rel="noopener noreferrer" className="hover:text-[hsl(var(--sm-gold))] transition-colors duration-300">
                   {creditText}
