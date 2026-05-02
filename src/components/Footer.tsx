@@ -131,7 +131,7 @@ const Footer = () => {
 
           {/* Column 1: Company Info */}
           <div
-            className="transition-all duration-700"
+            className="lg:col-span-4 transition-all duration-700"
             style={{
               opacity: isVisible ? 1 : 0,
               transform: isVisible ? 'translateY(0)' : 'translateY(30px)',
@@ -178,7 +178,7 @@ const Footer = () => {
 
           {/* Column 2: Quick Links */}
           <div
-            className="transition-all duration-700"
+            className="lg:col-span-2 lg:pl-6 transition-all duration-700"
             style={{
               opacity: isVisible ? 1 : 0,
               transform: isVisible ? 'translateY(0)' : 'translateY(30px)',
@@ -209,7 +209,7 @@ const Footer = () => {
 
           {/* Column 3: Contact Info */}
           <div
-            className="transition-all duration-700"
+            className="lg:col-span-3 transition-all duration-700"
             style={{
               opacity: isVisible ? 1 : 0,
               transform: isVisible ? 'translateY(0)' : 'translateY(30px)',
@@ -264,7 +264,7 @@ const Footer = () => {
 
           {/* Column 4: Phone Numbers */}
           <div
-            className="transition-all duration-700"
+            className="lg:col-span-3 transition-all duration-700"
             style={{
               opacity: isVisible ? 1 : 0,
               transform: isVisible ? 'translateY(0)' : 'translateY(30px)',
