@@ -578,6 +578,61 @@ const AdminProductEditor = () => {
                   />
                 </CardContent>
               </Card>
+
+              <Card>
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Product Video</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <input
+                    ref={videoRef}
+                    type="file"
+                    accept="video/*"
+                    className="hidden"
+                    onChange={e => { const f = e.target.files?.[0]; if (f) handleVideoUpload(f); e.currentTarget.value = ''; }}
+                  />
+
+                  {form.video_url ? (
+                    <div className="space-y-3">
+                      <video
+                        src={form.video_url}
+                        controls
+                        className="w-full rounded-lg border bg-black aspect-video"
+                      />
+                      <div className="flex items-center gap-2">
+                        <Button type="button" variant="outline" size="sm" onClick={() => videoRef.current?.click()} disabled={videoUploading}>
+                          {videoUploading ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : <Upload className="h-4 w-4 mr-1" />}
+                          Replace
+                        </Button>
+                        <Button type="button" variant="ghost" size="sm" onClick={() => setForm(f => ({ ...f, video_url: '' }))}>
+                          <X className="h-4 w-4 mr-1" /> Remove
+                        </Button>
+                        <p className="text-xs text-muted-foreground ml-auto truncate max-w-[60%]" title={form.video_url}>{form.video_url}</p>
+                      </div>
+                      <p className="text-xs text-muted-foreground">Click <strong>Update</strong> at the top to save the video to the product.</p>
+                    </div>
+                  ) : (
+                    <div
+                      className="border-2 border-dashed border-border/50 rounded-xl p-8 flex flex-col items-center justify-center gap-3 cursor-pointer hover:border-border hover:bg-muted/20 transition-all"
+                      onClick={() => videoRef.current?.click()}
+                    >
+                      {videoUploading ? (
+                        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+                      ) : (
+                        <>
+                          <div className="h-14 w-14 rounded-full bg-muted/50 flex items-center justify-center">
+                            <Upload className="h-7 w-7 text-muted-foreground/50" />
+                          </div>
+                          <div className="text-center">
+                            <p className="text-sm font-medium text-muted-foreground">Click to upload video</p>
+                            <p className="text-xs text-muted-foreground/60 mt-0.5">Max 100MB · MP4, WebM, MOV</p>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
             </div>
           ) : (
             <Card>
