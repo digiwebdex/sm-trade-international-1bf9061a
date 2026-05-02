@@ -113,8 +113,8 @@ mv dist frontend/
 ```bash
 npm install -g pm2
 
-cd /var/www/sm-trade-international/backend
-pm2 start server.js --name smtrade-api
+cd /var/www/sm-trade-international
+pm2 start ecosystem.config.cjs --only sm-trade-backend
 pm2 save
 pm2 startup  # Auto-start on reboot
 ```
@@ -141,7 +141,7 @@ curl https://smtradeint.com/api/health
 pm2 status
 
 # Check logs
-pm2 logs smtrade-api
+pm2 logs sm-trade-backend
 ```
 
 ---
@@ -215,7 +215,8 @@ docker compose up -d
 cd /var/www/sm-trade-international
 git pull
 cd backend && npm install
-pm2 restart smtrade-api
+cd ..
+pm2 restart sm-trade-backend --update-env
 
 # Rebuild frontend
 npm run build
@@ -225,5 +226,5 @@ cp -r dist/* frontend/dist/
 pg_dump -U smtrade_user smtrade_db > backup_$(date +%Y%m%d).sql
 
 # View logs
-pm2 logs smtrade-api --lines 100
+pm2 logs sm-trade-backend --lines 100
 ```
