@@ -15,6 +15,7 @@ const crudRoutes = require('./routes/crud');
 const uploadRoutes = require('./routes/upload');
 const quoteGenRoutes = require('./routes/generateQuote');
 const sendQuoteEmailRoutes = require('./routes/sendQuoteEmail');
+const sendContactEmailRoutes = require('./routes/sendContactEmail');
 const translateRoutes = require('./routes/translate');
 
 const app = express();
@@ -84,6 +85,7 @@ app.use('/api', crudRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/generate-quote', quoteGenRoutes);
 app.use('/api/send-quote-email', sendQuoteEmailRoutes);
+app.use('/api/send-contact-email', sendContactEmailRoutes);
 app.use('/api/translate', translateRoutes);
 
 // ── Serve frontend (production) ─────────────────────────────

@@ -86,20 +86,36 @@ const ContactSection = () => {
     }
     setSubmitting(true);
     try {
-      const composedMessage = [
-        form.package ? `Package Interest: ${form.package}` : null,
-        form.message.trim() || '(no message)',
-      ]
-        .filter(Boolean)
-        .join('\n\n');
-
-      const { error } = await supabase.from('contact_messages').insert({
+      const payload = {
         name: form.name.trim(),
-        email: form.email.trim() || 'no-email@provided.local',
+        email: form.email.trim(),
         phone: form.phone.trim(),
-        message: composedMessage,
+        message: form.message.trim(),
+      };
+
+      // 1) Save to database (best-effort, don't block email on failure)
+      try {
+        await supabase.from('contact_messages').insert({
+          name: payload.name,
+          email: payload.email || 'no-email@provided.local',
+          phone: payload.phone,
+          message: payload.message || '(no message)',
+        });
+      } catch (dbErr) {
+        console.warn('contact_messages insert failed:', dbErr);
+      }
+
+      // 2) Send email to info@smtradeint.com via backend
+      const resp = await fetch('/api/send-contact-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
       });
-      if (error) throw error;
+      if (!resp.ok) {
+        const data = await resp.json().catch(() => ({}));
+        throw new Error(data?.error || 'Email send failed');
+      }
+
       toast({ title: 'Message sent successfully!' });
       setForm({ name: '', phone: '', email: '', package: '', message: '' });
     } catch (err) {
