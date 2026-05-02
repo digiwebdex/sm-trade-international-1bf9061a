@@ -30,6 +30,7 @@ interface ProductForm {
   short_description_bn: string;
   category_id: string;
   image_url: string;
+  video_url: string;
   is_active: boolean;
   product_code: string;
   unit_price: number;
@@ -38,7 +39,7 @@ interface ProductForm {
 const emptyForm: ProductForm = {
   name_en: '', name_bn: '', description_en: '', description_bn: '',
   short_description_en: '', short_description_bn: '',
-  category_id: '', image_url: '', is_active: true, product_code: '', unit_price: 0,
+  category_id: '', image_url: '', video_url: '', is_active: true, product_code: '', unit_price: 0,
 };
 
 const slugify = (str: string) =>
@@ -57,7 +58,9 @@ const AdminProductEditor = () => {
   const [savedId, setSavedId] = useState<string | null>(id || null);
   const [activeTab, setActiveTab] = useState('basic');
   const [dragOver, setDragOver] = useState(false);
+  const [videoUploading, setVideoUploading] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+  const videoRef = useRef<HTMLInputElement>(null);
 
   // Fetch product if editing
   const { data: product, isLoading: productLoading } = useQuery({
@@ -99,6 +102,7 @@ const AdminProductEditor = () => {
         short_description_bn: (product as any).short_description_bn || '',
         category_id: product.category_id || '',
         image_url: product.image_url || '',
+        video_url: (product as any).video_url || '',
         is_active: product.is_active,
         product_code: (product as any).product_code || '',
         unit_price: Number((product as any).unit_price) || 0,
@@ -162,6 +166,30 @@ const AdminProductEditor = () => {
     setUploading(false);
   };
 
+  const handleVideoUpload = async (file: File) => {
+    if (!file.type.startsWith('video/')) {
+      toast({ title: 'Invalid file type', description: 'Only video files allowed.', variant: 'destructive' });
+      return;
+    }
+    if (file.size > 100 * 1024 * 1024) {
+      toast({ title: 'File too large', description: 'Max 100MB per video.', variant: 'destructive' });
+      return;
+    }
+    setVideoUploading(true);
+    try {
+      const ext = (file.name.split('.').pop() || 'mp4').toLowerCase();
+      const filePath = `products/videos/${Date.now()}.${ext}`;
+      const { data: uploadData, error } = await supabase.storage.from('cms-images').upload(filePath, file);
+      if (error) throw error;
+      const publicUrl = uploadData?.publicUrl || supabase.storage.from('cms-images').getPublicUrl(filePath).data.publicUrl;
+      setForm(f => ({ ...f, video_url: publicUrl }));
+      toast({ title: 'Video uploaded' });
+    } catch (err: any) {
+      toast({ title: 'Upload failed', description: err.message, variant: 'destructive' });
+    }
+    setVideoUploading(false);
+  };
+
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     setDragOver(false);
@@ -182,6 +210,7 @@ const AdminProductEditor = () => {
         short_description_bn: form.short_description_bn,
         category_id: form.category_id || null,
         image_url: form.image_url,
+        video_url: form.video_url || null,
         is_active: form.is_active,
         product_code: form.product_code || slugify(form.name_en),
         unit_price: form.unit_price,
@@ -547,6 +576,61 @@ const AdminProductEditor = () => {
                       toast({ title: 'Featured image updated' });
                     }}
                   />
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Product Video</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <input
+                    ref={videoRef}
+                    type="file"
+                    accept="video/*"
+                    className="hidden"
+                    onChange={e => { const f = e.target.files?.[0]; if (f) handleVideoUpload(f); e.currentTarget.value = ''; }}
+                  />
+
+                  {form.video_url ? (
+                    <div className="space-y-3">
+                      <video
+                        src={form.video_url}
+                        controls
+                        className="w-full rounded-lg border bg-black aspect-video"
+                      />
+                      <div className="flex items-center gap-2">
+                        <Button type="button" variant="outline" size="sm" onClick={() => videoRef.current?.click()} disabled={videoUploading}>
+                          {videoUploading ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : <Upload className="h-4 w-4 mr-1" />}
+                          Replace
+                        </Button>
+                        <Button type="button" variant="ghost" size="sm" onClick={() => setForm(f => ({ ...f, video_url: '' }))}>
+                          <X className="h-4 w-4 mr-1" /> Remove
+                        </Button>
+                        <p className="text-xs text-muted-foreground ml-auto truncate max-w-[60%]" title={form.video_url}>{form.video_url}</p>
+                      </div>
+                      <p className="text-xs text-muted-foreground">Click <strong>Update</strong> at the top to save the video to the product.</p>
+                    </div>
+                  ) : (
+                    <div
+                      className="border-2 border-dashed border-border/50 rounded-xl p-8 flex flex-col items-center justify-center gap-3 cursor-pointer hover:border-border hover:bg-muted/20 transition-all"
+                      onClick={() => videoRef.current?.click()}
+                    >
+                      {videoUploading ? (
+                        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+                      ) : (
+                        <>
+                          <div className="h-14 w-14 rounded-full bg-muted/50 flex items-center justify-center">
+                            <Upload className="h-7 w-7 text-muted-foreground/50" />
+                          </div>
+                          <div className="text-center">
+                            <p className="text-sm font-medium text-muted-foreground">Click to upload video</p>
+                            <p className="text-xs text-muted-foreground/60 mt-0.5">Max 100MB · MP4, WebM, MOV</p>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             </div>
