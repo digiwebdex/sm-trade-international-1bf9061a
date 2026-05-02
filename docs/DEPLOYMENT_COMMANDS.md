@@ -123,6 +123,8 @@ tail -f /var/log/nginx/access.log
 nano /etc/nginx/sites-available/smtradeint.com
 ```
 
+**Important:** only edit `/etc/nginx/sites-available/smtradeint.com` for the main site. Do **not** run global search/replace across `/etc/nginx/sites-enabled` or other vhosts like `soft.smtradeint.com`.
+
 ---
 
 ## SSL Certificate
@@ -180,7 +182,7 @@ free -h
 ps aux | grep node
 
 # Check port usage
-ss -tlnp | grep -E '3011|5440|80|443'
+ss -tlnp | grep -E '3105|5440|80|443'
 ```
 
 ---
