@@ -7,6 +7,7 @@ export interface BasketItem {
   src: string;
   category: string;
   quantity: number;
+  unitPrice?: number;
 }
 
 interface QuoteBasketContextType {
