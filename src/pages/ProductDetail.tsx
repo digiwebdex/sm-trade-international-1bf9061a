@@ -103,7 +103,7 @@ const ProductDetail = () => {
         .eq('category_id', product!.category_id!)
         .neq('id', productId!)
         .eq('is_active', true)
-        .limit(4);
+        .order('sort_order', { ascending: true });
       if (error) throw error;
       return data;
     },
