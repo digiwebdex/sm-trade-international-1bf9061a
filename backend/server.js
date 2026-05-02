@@ -85,6 +85,7 @@ app.use('/api', crudRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/generate-quote', quoteGenRoutes);
 app.use('/api/send-quote-email', sendQuoteEmailRoutes);
+app.use('/api/send-contact-email', sendContactEmailRoutes);
 app.use('/api/translate', translateRoutes);
 
 // ── Serve frontend (production) ─────────────────────────────
