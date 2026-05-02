@@ -26,7 +26,7 @@ const Footer = () => {
   const footerRef = useRef<HTMLElement>(null);
 
   const companyName = get('branding', 'company_name', 'S. M. Trade International');
-  const tagline = get('branding', 'tagline', 'Premium Corporate Gifts');
+  const tagline = get('branding', 'tagline', '1st Class Govt. Contractor, Supplier & Importer');
   const creditText = get('branding', 'credit_text', 'Digitally Crafted by Digiwebdex.com');
   const creditUrl = get('branding', 'credit_url', 'https://digiwebdex.com');
   const phone = get('contact', 'phone', '+88 01867666888');
@@ -137,13 +137,13 @@ const Footer = () => {
               transitionDelay: '0ms',
             }}
           >
-            <div className="flex items-center gap-3 mb-5">
-              <img src={logo} alt="Logo" className="h-14 w-14 rounded-lg object-contain bg-white/10 p-1" />
+            <div className="flex items-center gap-4 mb-5">
+              <img src={logo} alt="Logo" className="h-20 w-20 rounded-lg object-contain bg-white/10 p-1.5 shrink-0" />
               <div>
-                <span className="font-bold text-lg block whitespace-nowrap" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+                <span className="font-bold text-xl block whitespace-nowrap" style={{ fontFamily: 'Montserrat, sans-serif' }}>
                   {companyName}
                 </span>
-                <span className="text-[hsl(var(--sm-gold))] text-xs tracking-wider uppercase" style={{ fontFamily: 'DM Sans, sans-serif' }}>
+                <span className="text-[hsl(var(--sm-gold))] text-[11px] tracking-wider uppercase block mt-0.5" style={{ fontFamily: 'DM Sans, sans-serif' }}>
                   {tagline}
                 </span>
               </div>
