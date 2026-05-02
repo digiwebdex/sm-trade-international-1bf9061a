@@ -180,8 +180,7 @@ const HeroSection = () => {
           .from('products')
           .select('id, name_en, name_bn, name_zh, image_url, product_code, category_id, unit_price')
         .eq('is_active', true)
-        .order('sort_order')
-        .limit(12);
+        .order('sort_order');
       if (error) throw error;
       return data;
     },
