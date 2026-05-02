@@ -151,6 +151,7 @@ const ProductDetail = () => {
       src: displayImg,
       category: product.category_id || '',
       quantity,
+      unitPrice,
     });
     toast.success(lang === 'zh' ? '已加入询价篮' : lang === 'en' ? 'Added to quote basket' : 'কোটেশন বাস্কেটে যোগ হয়েছে');
   };

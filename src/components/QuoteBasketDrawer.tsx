@@ -214,13 +214,21 @@ const QuoteBasketDrawer = () => {
             <>
               <ScrollArea className="flex-1 px-6 py-4">
                 <div className="space-y-3">
-                  {items.map(item => (
+                  {items.map(item => {
+                    const price = (item as any).unitPrice || 0;
+                    const lineTotal = price * item.quantity;
+                    return (
                     <div key={item.id} className="flex gap-3 p-3 rounded-xl bg-muted/50 border border-border/50">
                       <div className="w-16 h-16 rounded-lg bg-white overflow-hidden flex-shrink-0">
                         <img src={item.src} alt={title(item)} className="w-full h-full object-contain p-1" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <h4 className="text-sm font-semibold truncate">{title(item)}</h4>
+                        {price > 0 && (
+                          <div className="text-xs text-muted-foreground mt-0.5">
+                            ৳{price.toLocaleString()} <span className="opacity-60">×</span> {item.quantity} = <span className="font-semibold text-foreground">৳{lineTotal.toLocaleString()}</span>
+                          </div>
+                        )}
                         <div className="flex items-center gap-2 mt-2">
                           <button
                             onClick={() => updateQuantity(item.id, item.quantity - 1)}
@@ -245,11 +253,24 @@ const QuoteBasketDrawer = () => {
                         <X className="h-4 w-4" />
                       </button>
                     </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </ScrollArea>
 
               <div className="border-t border-border px-6 py-4 space-y-3">
+                {(() => {
+                  const grand = items.reduce((s, i) => s + ((i as any).unitPrice || 0) * i.quantity, 0);
+                  if (grand <= 0) return null;
+                  return (
+                    <div className="flex items-center justify-between pb-1">
+                      <span className="text-sm font-semibold text-muted-foreground">
+                        {lang === 'en' ? 'Total' : 'মোট'}
+                      </span>
+                      <span className="text-lg font-bold text-accent">৳{grand.toLocaleString()}</span>
+                    </div>
+                  );
+                })()}
                 <Button
                   className="w-full bg-accent hover:bg-accent/90 text-white gap-2"
                   size="lg"
