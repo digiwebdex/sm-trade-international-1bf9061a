@@ -107,7 +107,7 @@ const QuoteBasketDrawer = () => {
         >
           <ShoppingBag className="h-6 w-6" />
           <span className="absolute -top-1 -right-1 bg-primary text-primary-foreground text-[10px] font-bold rounded-full min-w-6 h-6 px-1 flex items-center justify-center shadow-md">
-            {totalItems > 999 ? '999+' : totalItems}
+            {items.length > 99 ? '99+' : items.length}
           </span>
         </button>
       )}
