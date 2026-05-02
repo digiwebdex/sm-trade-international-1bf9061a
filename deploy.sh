@@ -41,6 +41,13 @@ echo "🔨 Building frontend..."
 npm run build
 
 echo "♻️ Restarting backend..."
-pm2 restart sm-trade-backend --update-env
+if pm2 describe sm-trade-backend >/dev/null 2>&1; then
+  pm2 restart sm-trade-backend --update-env
+else
+  pm2 start /var/www/sm-trade-international/ecosystem.config.cjs --only sm-trade-backend --update-env
+fi
+
+echo "💾 Saving PM2 process list..."
+pm2 save
 
 echo "✅ Deploy complete!"

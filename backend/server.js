@@ -18,7 +18,7 @@ const sendQuoteEmailRoutes = require('./routes/sendQuoteEmail');
 const translateRoutes = require('./routes/translate');
 
 const app = express();
-const PORT = parseInt(process.env.PORT || '3011', 10);
+const PORT = parseInt(process.env.PORT || '3105', 10);
 
 // ── Middleware ───────────────────────────────────────────────
 app.use(cors({
