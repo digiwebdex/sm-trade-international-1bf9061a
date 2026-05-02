@@ -292,7 +292,7 @@ const ContactSection = () => {
 
         {/* Office locations + maps */}
         {cs.offices.length > 0 && (
-          <div className="max-w-6xl mx-auto mt-8">
+          <div className="max-w-[1400px] mx-auto mt-10">
             <div className="rounded-lg p-4 mb-4" style={{ backgroundColor: GREEN_SOFT }}>
               <h3 className="font-semibold flex items-center gap-2" style={{ color: GREEN }}>
                 <MapPin className="h-4 w-4" /> {cs.office_locations_title}
