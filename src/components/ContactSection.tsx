@@ -182,7 +182,7 @@ const ContactSection = () => {
                   >
                     <Icon className="h-4 w-4 text-white" />
                   </div>
-                  <h3 className="font-semibold text-sm mb-2" style={{ color: GOLD }}>
+                  <h3 className="font-bold text-lg md:text-xl mb-2 tracking-tight" style={{ color: GOLD }}>
                     {card.title}
                   </h3>
                   <div className="space-y-1 text-sm text-foreground/80">
