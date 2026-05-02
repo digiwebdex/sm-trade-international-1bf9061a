@@ -3,18 +3,20 @@
  * Client-side filtering/ordering because the VPS CRUD returns all rows.
  */
 
+const PREVIEW_HOST_MARKERS = ['lovableproject.com', 'id-preview--', 'lovable.app'];
 const DEFAULT_PUBLIC_ORIGIN = 'https://smtradeint.com';
 const UPLOAD_ROUTE_PREFIX = '/uploads';
 const KNOWN_UPLOAD_BUCKETS = ['cms-images', 'products', 'quote-attachments'] as const;
 const CMS_UPLOAD_FOLDERS = ['products', 'gallery', 'hero-slides', 'clients', 'seo', 'product-views', 'variant-images', 'variants'] as const;
 const isBrowser = typeof window !== 'undefined';
-const browserOrigin = isBrowser ? window.location.origin : DEFAULT_PUBLIC_ORIGIN;
-const explicitPublicOrigin = import.meta.env.VITE_PUBLIC_SITE_ORIGIN?.trim();
-const explicitApiBase = import.meta.env.VITE_API_BASE_URL?.trim();
+const hostname = isBrowser ? window.location.hostname : '';
+const isPreviewHost = PREVIEW_HOST_MARKERS.some(marker => hostname.includes(marker));
 
-export const PUBLIC_ORIGIN = explicitPublicOrigin || browserOrigin;
+export const PUBLIC_ORIGIN = import.meta.env.VITE_PUBLIC_SITE_ORIGIN
+  || (isPreviewHost ? DEFAULT_PUBLIC_ORIGIN : (isBrowser ? window.location.origin : DEFAULT_PUBLIC_ORIGIN));
 
-export const API_BASE = explicitApiBase || `${PUBLIC_ORIGIN}/api`;
+export const API_BASE = import.meta.env.VITE_API_BASE_URL
+  || (isPreviewHost ? `${DEFAULT_PUBLIC_ORIGIN}/api` : '/api');
 
 function joinPublicOrigin(pathname: string): string {
   return `${PUBLIC_ORIGIN}${pathname.startsWith('/') ? pathname : `/${pathname}`}`;
