@@ -209,7 +209,7 @@ const ContactSection = () => {
           {/* Form */}
           <div className="bg-white rounded-lg p-6 md:p-8 shadow-sm border border-black/5">
             <h3
-              className="text-xl font-semibold mb-5"
+              className="text-2xl md:text-3xl font-bold mb-5 tracking-tight"
               style={{ color: GREEN, fontFamily: 'Cormorant Garamond, serif' }}
             >
               {cs.form_title}
