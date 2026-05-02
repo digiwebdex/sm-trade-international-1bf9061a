@@ -259,6 +259,18 @@ const QuoteBasketDrawer = () => {
               </ScrollArea>
 
               <div className="border-t border-border px-6 py-4 space-y-3">
+                {(() => {
+                  const grand = items.reduce((s, i) => s + ((i as any).unitPrice || 0) * i.quantity, 0);
+                  if (grand <= 0) return null;
+                  return (
+                    <div className="flex items-center justify-between pb-1">
+                      <span className="text-sm font-semibold text-muted-foreground">
+                        {lang === 'en' ? 'Total' : 'মোট'}
+                      </span>
+                      <span className="text-lg font-bold text-accent">৳{grand.toLocaleString()}</span>
+                    </div>
+                  );
+                })()}
                 <Button
                   className="w-full bg-accent hover:bg-accent/90 text-white gap-2"
                   size="lg"
