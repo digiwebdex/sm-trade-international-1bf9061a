@@ -244,12 +244,23 @@ const ProductDetail = () => {
         <div className="grid lg:grid-cols-2 gap-6 lg:gap-10 items-start">
 
           {/* LEFT — Image Gallery */}
-          <div className="lg:sticky lg:top-20">
+          <div className="lg:sticky lg:top-20 space-y-4">
             <ProductImageGallery
               images={galleryImages}
               selectedVariantId={null}
               title={title}
             />
+            {(product as any).video_url && (
+              <div className="rounded-xl overflow-hidden border bg-black">
+                <video
+                  src={(product as any).video_url}
+                  controls
+                  playsInline
+                  preload="metadata"
+                  className="w-full aspect-video"
+                />
+              </div>
+            )}
           </div>
 
           {/* RIGHT — Product Info */}
