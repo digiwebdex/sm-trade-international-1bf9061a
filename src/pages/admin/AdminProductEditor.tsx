@@ -166,6 +166,30 @@ const AdminProductEditor = () => {
     setUploading(false);
   };
 
+  const handleVideoUpload = async (file: File) => {
+    if (!file.type.startsWith('video/')) {
+      toast({ title: 'Invalid file type', description: 'Only video files allowed.', variant: 'destructive' });
+      return;
+    }
+    if (file.size > 100 * 1024 * 1024) {
+      toast({ title: 'File too large', description: 'Max 100MB per video.', variant: 'destructive' });
+      return;
+    }
+    setVideoUploading(true);
+    try {
+      const ext = (file.name.split('.').pop() || 'mp4').toLowerCase();
+      const filePath = `products/videos/${Date.now()}.${ext}`;
+      const { data: uploadData, error } = await supabase.storage.from('cms-images').upload(filePath, file);
+      if (error) throw error;
+      const publicUrl = uploadData?.publicUrl || supabase.storage.from('cms-images').getPublicUrl(filePath).data.publicUrl;
+      setForm(f => ({ ...f, video_url: publicUrl }));
+      toast({ title: 'Video uploaded' });
+    } catch (err: any) {
+      toast({ title: 'Upload failed', description: err.message, variant: 'destructive' });
+    }
+    setVideoUploading(false);
+  };
+
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     setDragOver(false);
