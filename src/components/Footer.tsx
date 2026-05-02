@@ -103,19 +103,19 @@ const Footer = () => {
             playsInline
             preload="auto"
             poster={footerBgImage}
-            className="w-full h-full object-cover opacity-80"
+            className="w-full h-full object-cover opacity-50"
           />
         ) : (
           <img
             src={footerBgImage}
             alt=""
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover opacity-50"
             loading="lazy"
           />
         )}
-        {/* Dark overlay with brand tint */}
-        <div className="absolute inset-0 bg-[hsl(var(--sm-green-dark))]/72" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[hsl(var(--sm-black))]/45 via-transparent to-[hsl(var(--sm-black))]/15" />
+        {/* Deeper dark overlay for clear text legibility */}
+        <div className="absolute inset-0 bg-[hsl(var(--sm-green-dark))]/90" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[hsl(var(--sm-black))]/80 via-[hsl(var(--sm-black))]/55 to-[hsl(var(--sm-black))]/40" />
       </div>
 
       {/* Subtle pattern overlay */}
