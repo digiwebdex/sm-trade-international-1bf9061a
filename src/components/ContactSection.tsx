@@ -277,44 +277,6 @@ const ContactSection = () => {
           </div>
         </div>
 
-        {/* Office cards: address + phone + email */}
-        <div className="grid md:grid-cols-2 gap-4 max-w-6xl mx-auto mt-6">
-          {cs.offices.map((o, idx) => (
-            <div
-              key={idx}
-              className="bg-white rounded-lg p-5 shadow-sm border border-black/5"
-            >
-              <div className="flex items-center gap-2 mb-3">
-                <div
-                  className="w-9 h-9 rounded-md flex items-center justify-center"
-                  style={{ backgroundColor: GREEN }}
-                >
-                  <Building2 className="h-4 w-4 text-white" />
-                </div>
-                <h3 className="font-semibold" style={{ color: GOLD }}>{o.title}</h3>
-              </div>
-              <div className="space-y-1.5 text-sm text-foreground/80">
-                <div className="flex items-start gap-2">
-                  <MapPin className="h-4 w-4 mt-0.5 shrink-0" style={{ color: GREEN }} />
-                  <span>{o.address}</span>
-                </div>
-                {o.phones.map((p) => (
-                  <div key={p} className="flex items-start gap-2">
-                    <Phone className="h-4 w-4 mt-0.5 shrink-0" style={{ color: GREEN }} />
-                    <a href={`tel:${p.replace(/\s/g, '')}`} className="hover:underline">{p}</a>
-                  </div>
-                ))}
-                {o.email && (
-                  <div className="flex items-start gap-2">
-                    <Mail className="h-4 w-4 mt-0.5 shrink-0" style={{ color: GREEN }} />
-                    <a href={`mailto:${o.email}`} className="hover:underline">{o.email}</a>
-                  </div>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
-
         {/* Office locations + maps */}
         {cs.offices.length > 0 && (
           <div className="max-w-6xl mx-auto mt-8">
