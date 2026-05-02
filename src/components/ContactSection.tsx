@@ -129,20 +129,22 @@ const ContactSection = () => {
     >
       <div className="container mx-auto px-4 relative">
         {/* Heading */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-14">
           <p
-            className="inline-flex items-center gap-2 text-sm font-medium tracking-wide uppercase mb-3"
+            className="inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.25em] uppercase mb-4"
             style={{ color: GOLD }}
           >
-            <MessageSquare className="h-4 w-4" /> {cs.eyebrow}
+            <span className="h-px w-8" style={{ backgroundColor: GOLD }} />
+            <MessageSquare className="h-3.5 w-3.5" /> {cs.eyebrow}
+            <span className="h-px w-8" style={{ backgroundColor: GOLD }} />
           </p>
           <h2
-            className="text-4xl md:text-5xl font-semibold mb-2"
+            className="text-4xl md:text-5xl lg:text-6xl font-semibold mb-4 leading-tight tracking-tight"
             style={{ color: GREEN, fontFamily: 'Cormorant Garamond, serif' }}
           >
             {cs.heading}
           </h2>
-          <p className="max-w-2xl mx-auto text-muted-foreground text-sm md:text-base">
+          <p className="max-w-2xl mx-auto text-base md:text-lg leading-relaxed text-foreground/60 font-light">
             {cs.subheading}
           </p>
         </div>
