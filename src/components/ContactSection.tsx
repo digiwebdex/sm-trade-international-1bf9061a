@@ -165,9 +165,10 @@ const ContactSection = () => {
           </p>
         </div>
 
-        {/* Info cards — wide 4-column row on desktop */}
-        <div className="max-w-6xl mx-auto mb-8">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {/* Info cards (left) + Form (right) */}
+        <div className="grid lg:grid-cols-[1.4fr_1fr] gap-6 max-w-[1400px] mx-auto items-start">
+          {/* Info cards 2x3 grid on the left */}
+          <div className="grid sm:grid-cols-2 gap-5">
             {cs.info_cards.map((card, idx) => {
               const Icon = ICON_MAP[card.icon] || Phone;
               return (
@@ -223,12 +224,9 @@ const ContactSection = () => {
               );
             })}
           </div>
-        </div>
 
-        {/* Form + Offices side by side */}
-        <div className="grid lg:grid-cols-2 gap-6 max-w-6xl mx-auto">
-          {/* Form */}
-          <div className="relative bg-white rounded-2xl p-6 md:p-8 shadow-[0_2px_12px_rgba(0,0,0,0.04)] border border-black/5 overflow-hidden">
+          {/* Form on the right — sticky on large screens */}
+          <div className="relative bg-white rounded-2xl p-6 md:p-8 shadow-[0_2px_12px_rgba(0,0,0,0.04)] border border-black/5 overflow-hidden lg:sticky lg:top-24">
             <div
               className="absolute top-0 left-0 right-0 h-[3px]"
               style={{ background: `linear-gradient(90deg, ${GOLD}, ${GREEN})` }}
