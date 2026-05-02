@@ -15,6 +15,7 @@ const crudRoutes = require('./routes/crud');
 const uploadRoutes = require('./routes/upload');
 const quoteGenRoutes = require('./routes/generateQuote');
 const sendQuoteEmailRoutes = require('./routes/sendQuoteEmail');
+const sendContactEmailRoutes = require('./routes/sendContactEmail');
 const translateRoutes = require('./routes/translate');
 
 const app = express();
