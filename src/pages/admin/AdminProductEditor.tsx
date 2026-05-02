@@ -30,6 +30,7 @@ interface ProductForm {
   short_description_bn: string;
   category_id: string;
   image_url: string;
+  video_url: string;
   is_active: boolean;
   product_code: string;
   unit_price: number;
@@ -38,7 +39,7 @@ interface ProductForm {
 const emptyForm: ProductForm = {
   name_en: '', name_bn: '', description_en: '', description_bn: '',
   short_description_en: '', short_description_bn: '',
-  category_id: '', image_url: '', is_active: true, product_code: '', unit_price: 0,
+  category_id: '', image_url: '', video_url: '', is_active: true, product_code: '', unit_price: 0,
 };
 
 const slugify = (str: string) =>
