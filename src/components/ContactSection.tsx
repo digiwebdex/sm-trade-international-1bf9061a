@@ -182,7 +182,7 @@ const ContactSection = () => {
                   >
                     <Icon className="h-4 w-4 text-white" />
                   </div>
-                  <h3 className="font-semibold text-sm mb-2" style={{ color: GOLD }}>
+                  <h3 className="font-bold text-lg md:text-xl mb-2 tracking-tight" style={{ color: GOLD }}>
                     {card.title}
                   </h3>
                   <div className="space-y-1 text-sm text-foreground/80">
@@ -209,7 +209,7 @@ const ContactSection = () => {
           {/* Form */}
           <div className="bg-white rounded-lg p-6 md:p-8 shadow-sm border border-black/5">
             <h3
-              className="text-xl font-semibold mb-5"
+              className="text-2xl md:text-3xl font-bold mb-5 tracking-tight"
               style={{ color: GREEN, fontFamily: 'Cormorant Garamond, serif' }}
             >
               {cs.form_title}
@@ -282,7 +282,7 @@ const ContactSection = () => {
                   className="bg-white rounded-lg overflow-hidden shadow-sm border border-black/5"
                 >
                   <div className="px-4 py-3 flex items-center justify-between border-b border-black/5">
-                    <span className="font-medium text-sm" style={{ color: GREEN }}>
+                    <span className="font-bold text-base md:text-lg tracking-tight" style={{ color: GREEN }}>
                       📍 {o.title}
                     </span>
                     {o.mapsLink && (
