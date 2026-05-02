@@ -50,6 +50,13 @@ const ProductImageGallery = ({
   const [zoomPos, setZoomPos] = useState({ x: 50, y: 50 });
   const [fade, setFade] = useState(true);
   const touchStart = useRef<number | null>(null);
+  const imageBoxRef = useRef<HTMLDivElement>(null);
+  const [boxSize, setBoxSize] = useState({ w: 0, h: 0 });
+
+  // Amazon-style zoom config
+  const ZOOM_LEVEL = 2.5;
+  const LENS_SIZE = 160; // px square lens
+  const PANEL_SIZE = 480; // px square external preview
 
   useEffect(() => {
     setFade(false);
@@ -87,8 +94,8 @@ const ProductImageGallery = ({
   }, [goNext, goPrev]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!isZoomed) return;
     const rect = e.currentTarget.getBoundingClientRect();
+    setBoxSize({ w: rect.width, h: rect.height });
     setZoomPos({
       x: ((e.clientX - rect.left) / rect.width) * 100,
       y: ((e.clientY - rect.top) / rect.height) * 100,
@@ -182,30 +189,46 @@ const ProductImageGallery = ({
       )}
 
       {/* RIGHT — Main image */}
-      <div className="flex-1">
+      <div className="flex-1 relative">
         <div
-          className="relative group aspect-square rounded-lg overflow-hidden bg-white border border-border/20 cursor-crosshair"
-          onMouseEnter={() => setIsZoomed(true)}
+          ref={imageBoxRef}
+          className="relative group aspect-square rounded-lg overflow-hidden bg-white border border-border/20"
+          style={{ cursor: isZoomed ? 'crosshair' : 'zoom-in' }}
+          onMouseEnter={(e) => {
+            const rect = e.currentTarget.getBoundingClientRect();
+            setBoxSize({ w: rect.width, h: rect.height });
+            setIsZoomed(true);
+          }}
           onMouseLeave={() => { setIsZoomed(false); setZoomPos({ x: 50, y: 50 }); }}
           onMouseMove={handleMouseMove}
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
         >
           {current.url ? (
-            <div className="w-full h-full overflow-hidden">
+            <>
               <img
                 src={current.url}
                 alt={current.label || title}
                 className={cn(
-                  'w-full h-full object-contain transition-all duration-300',
-                  isZoomed ? 'scale-[2.2]' : 'scale-100',
+                  'w-full h-full object-contain transition-opacity duration-200',
                   fade ? 'opacity-100' : 'opacity-0',
                 )}
-                style={isZoomed ? { transformOrigin: `${zoomPos.x}% ${zoomPos.y}%` } : undefined}
                 loading="eager"
                 decoding="async"
               />
-            </div>
+              {/* Zoom lens overlay (Amazon-style) */}
+              {isZoomed && boxSize.w > 0 && (
+                <div
+                  className="pointer-events-none absolute border border-[hsl(var(--sm-gold))]/70 bg-[hsl(var(--sm-gold))]/15 hidden md:block transition-[left,top] duration-75"
+                  style={{
+                    width: LENS_SIZE,
+                    height: LENS_SIZE,
+                    left: Math.max(0, Math.min(boxSize.w - LENS_SIZE, (zoomPos.x / 100) * boxSize.w - LENS_SIZE / 2)),
+                    top: Math.max(0, Math.min(boxSize.h - LENS_SIZE, (zoomPos.y / 100) * boxSize.h - LENS_SIZE / 2)),
+                  }}
+                />
+              )}
+            </>
           ) : (
             <div className="w-full h-full flex items-center justify-center text-muted-foreground">
               <Square className="h-16 w-16 opacity-10" />
@@ -217,13 +240,13 @@ const ProductImageGallery = ({
             <>
               <button
                 onClick={e => { e.stopPropagation(); goPrev(); }}
-                className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-background/80 backdrop-blur border border-border/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-sm hover:bg-background"
+                className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-background/80 backdrop-blur border border-border/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-sm hover:bg-background z-10"
               >
                 <ChevronLeft className="h-4 w-4" />
               </button>
               <button
                 onClick={e => { e.stopPropagation(); goNext(); }}
-                className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-background/80 backdrop-blur border border-border/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-sm hover:bg-background"
+                className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-background/80 backdrop-blur border border-border/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-sm hover:bg-background z-10"
               >
                 <ChevronRight className="h-4 w-4" />
               </button>
@@ -235,12 +258,27 @@ const ProductImageGallery = ({
             href={current.url}
             download
             onClick={e => e.stopPropagation()}
-            className="absolute top-3 right-3 w-8 h-8 rounded-full bg-background/80 backdrop-blur border border-border/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-sm hover:bg-background"
+            className="absolute top-3 right-3 w-8 h-8 rounded-full bg-background/80 backdrop-blur border border-border/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-sm hover:bg-background z-10"
             title="Download image"
           >
             <Download className="h-4 w-4" />
           </a>
         </div>
+
+        {/* Amazon-style external zoom panel */}
+        {isZoomed && current.url && boxSize.w > 0 && (
+          <div
+            className="hidden md:block absolute top-0 left-full ml-4 rounded-lg border border-border/30 bg-white shadow-2xl overflow-hidden z-30 pointer-events-none animate-fade-in"
+            style={{
+              width: PANEL_SIZE,
+              height: PANEL_SIZE,
+              backgroundImage: `url("${current.url}")`,
+              backgroundRepeat: 'no-repeat',
+              backgroundSize: `${boxSize.w * ZOOM_LEVEL}px ${boxSize.h * ZOOM_LEVEL}px`,
+              backgroundPosition: `${zoomPos.x}% ${zoomPos.y}%`,
+            }}
+          />
+        )}
 
         {/* Mobile horizontal thumbnails */}
         {images.length > 1 && (
