@@ -363,10 +363,21 @@ const HeroSection = () => {
           </div>
         </div>
 
-        {/* Right: 3D Carousel */}
+        {/* Right: 3D Carousel (desktop) */}
         {products.length >= 3 && (
           <div className="hidden lg:flex items-center justify-center py-16 shrink-0">
             <ProductCarousel
+              products={products}
+              lang={lang}
+              onProductClick={handleProductClick}
+            />
+          </div>
+        )}
+
+        {/* Mobile/Tablet product carousel */}
+        {products.length >= 2 && (
+          <div className="lg:hidden w-full pb-10 -mt-4">
+            <MobileProductCarousel
               products={products}
               lang={lang}
               onProductClick={handleProductClick}
