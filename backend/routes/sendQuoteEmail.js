@@ -1,12 +1,28 @@
 const express = require('express');
-const nodemailer = require('nodemailer');
 const router = express.Router();
 
 const RECIPIENT_EMAIL = process.env.QUOTE_RECIPIENT_EMAIL || 'asomoalamin@yahoo.com';
 
+let nodemailerInstance = null;
+
+function getNodemailer() {
+  if (nodemailerInstance) return nodemailerInstance;
+
+  try {
+    nodemailerInstance = require('nodemailer');
+    return nodemailerInstance;
+  } catch (error) {
+    const dependencyError = new Error('Email service dependency is missing: nodemailer');
+    dependencyError.code = 'EMAIL_DEPENDENCY_MISSING';
+    dependencyError.cause = error;
+    throw dependencyError;
+  }
+}
+
 // Create reusable transporter – supports SMTP config via env vars,
 // falls back to a direct-send approach (no relay) when none are set.
 function getTransporter() {
+  const nodemailer = getNodemailer();
   const host = process.env.SMTP_HOST;
   const port = parseInt(process.env.SMTP_PORT || '587', 10);
   const user = process.env.SMTP_USER;
