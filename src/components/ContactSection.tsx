@@ -282,7 +282,7 @@ const ContactSection = () => {
                   className="bg-white rounded-lg overflow-hidden shadow-sm border border-black/5"
                 >
                   <div className="px-4 py-3 flex items-center justify-between border-b border-black/5">
-                    <span className="font-medium text-sm" style={{ color: GREEN }}>
+                    <span className="font-bold text-base md:text-lg tracking-tight" style={{ color: GREEN }}>
                       📍 {o.title}
                     </span>
                     {o.mapsLink && (
