@@ -65,6 +65,11 @@ const AdminLogin = () => {
             <Button type="submit" className="w-full bg-sm-red hover:bg-[hsl(var(--sm-red-dark))] text-white" disabled={loading}>
               {loading ? 'Logging in...' : 'Login'}
             </Button>
+            <div className="text-center">
+              <Link to="/admin/forgot-password" className="text-sm text-muted-foreground hover:text-sm-red hover:underline">
+                Forgot password?
+              </Link>
+            </div>
           </form>
         </CardContent>
       </Card>
