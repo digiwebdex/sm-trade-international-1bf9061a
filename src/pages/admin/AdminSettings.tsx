@@ -441,6 +441,10 @@ const AdminSettings = () => {
             </CardContent>
           </Card>
         </TabsContent>
+
+        <TabsContent value="account">
+          <ChangePasswordForm />
+        </TabsContent>
       </Tabs>
     </div>
   );
