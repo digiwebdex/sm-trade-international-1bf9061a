@@ -8,7 +8,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { Save, Loader2, Globe, Layout, Users, Phone, FileText, Layers, Cog } from 'lucide-react';
+import { Save, Loader2, Globe, Layout, Users, Phone, FileText, Layers, Cog, KeyRound } from 'lucide-react';
+import ChangePasswordForm from '@/components/admin/ChangePasswordForm';
 type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 type SettingsMap = Record<string, Record<string, string>>;
@@ -266,6 +267,9 @@ const AdminSettings = () => {
           <TabsTrigger value="footer" className="gap-1.5 text-xs">
             <FileText className="h-3.5 w-3.5" /> Footer
           </TabsTrigger>
+          <TabsTrigger value="account" className="gap-1.5 text-xs">
+            <KeyRound className="h-3.5 w-3.5" /> Account
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="branding">
@@ -436,6 +440,10 @@ const AdminSettings = () => {
               <SaveButton section="footer" />
             </CardContent>
           </Card>
+        </TabsContent>
+
+        <TabsContent value="account">
+          <ChangePasswordForm />
         </TabsContent>
       </Tabs>
     </div>
