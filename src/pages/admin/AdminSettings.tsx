@@ -267,6 +267,9 @@ const AdminSettings = () => {
           <TabsTrigger value="footer" className="gap-1.5 text-xs">
             <FileText className="h-3.5 w-3.5" /> Footer
           </TabsTrigger>
+          <TabsTrigger value="account" className="gap-1.5 text-xs">
+            <KeyRound className="h-3.5 w-3.5" /> Account
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="branding">
