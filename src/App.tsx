@@ -29,6 +29,8 @@ const PageFallback = () => (
 
 // Lazy-load admin routes – they're never needed on the public site
 const AdminLogin = lazy(() => import("./pages/AdminLogin"));
+const AdminForgotPassword = lazy(() => import("./pages/AdminForgotPassword"));
+const AdminResetPassword = lazy(() => import("./pages/AdminResetPassword"));
 const AdminLayout = lazy(() => import("./components/admin/AdminLayout"));
 const ProtectedRoute = lazy(() => import("./components/admin/ProtectedRoute"));
 const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
@@ -116,6 +118,12 @@ const App = () => (
               </Route>
               <Route path="/admin/login" element={
                 <Suspense fallback={<AdminFallback />}><AdminLogin /></Suspense>
+              } />
+              <Route path="/admin/forgot-password" element={
+                <Suspense fallback={<AdminFallback />}><AdminForgotPassword /></Suspense>
+              } />
+              <Route path="/admin/reset-password" element={
+                <Suspense fallback={<AdminFallback />}><AdminResetPassword /></Suspense>
               } />
               <Route path="/admin" element={
                 <Suspense fallback={<AdminFallback />}>

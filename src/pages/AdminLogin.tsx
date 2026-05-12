@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Lock, Mail } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import logo from '@/assets/logo.jpeg';
 
@@ -65,6 +65,11 @@ const AdminLogin = () => {
             <Button type="submit" className="w-full bg-sm-red hover:bg-[hsl(var(--sm-red-dark))] text-white" disabled={loading}>
               {loading ? 'Logging in...' : 'Login'}
             </Button>
+            <div className="text-center">
+              <Link to="/admin/forgot-password" className="text-sm text-muted-foreground hover:text-sm-red hover:underline">
+                Forgot password?
+              </Link>
+            </div>
           </form>
         </CardContent>
       </Card>
