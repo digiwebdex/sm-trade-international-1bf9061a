@@ -119,6 +119,12 @@ const App = () => (
               <Route path="/admin/login" element={
                 <Suspense fallback={<AdminFallback />}><AdminLogin /></Suspense>
               } />
+              <Route path="/admin/forgot-password" element={
+                <Suspense fallback={<AdminFallback />}><AdminForgotPassword /></Suspense>
+              } />
+              <Route path="/admin/reset-password" element={
+                <Suspense fallback={<AdminFallback />}><AdminResetPassword /></Suspense>
+              } />
               <Route path="/admin" element={
                 <Suspense fallback={<AdminFallback />}>
                   <ProtectedRoute><AdminLayout /></ProtectedRoute>
