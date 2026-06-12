@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '@/lib/apiClient';
+import { supabase, API_BASE } from '@/lib/apiClient';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
@@ -131,10 +131,12 @@ const AdminProducts = () => {
   const removeBgMutation = useMutation({
     mutationFn: async ({ id, image_url }: { id: string; image_url: string }) => {
       setRemovingBgId(id);
-      const resp = await fetch(`/api/remove-bg`, {
-        method: "POST",
+      const token = localStorage.getItem('auth_token');
+      const resp = await fetch(`${API_BASE}/remove-bg`, {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
         body: JSON.stringify({ product_id: id, image_url }),
       });
