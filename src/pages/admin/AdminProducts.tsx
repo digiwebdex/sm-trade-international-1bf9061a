@@ -131,13 +131,10 @@ const AdminProducts = () => {
   const removeBgMutation = useMutation({
     mutationFn: async ({ id, image_url }: { id: string; image_url: string }) => {
       setRemovingBgId(id);
-      const SUPA_URL = (import.meta as any).env.VITE_SUPABASE_URL;
-      const SUPA_KEY = (import.meta as any).env.VITE_SUPABASE_PUBLISHABLE_KEY || (import.meta as any).env.VITE_SUPABASE_ANON_KEY;
-      const resp = await fetch(`${SUPA_URL}/functions/v1/remove-bg`, {
-        method: 'POST',
+      const resp = await fetch(`/api/remove-bg`, {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          ...(SUPA_KEY ? { Authorization: `Bearer ${SUPA_KEY}` } : {}),
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ product_id: id, image_url }),
       });

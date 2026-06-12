@@ -25,6 +25,7 @@ const ProductDetail = () => {
   const { addItem } = useQuoteBasket();
   const [quantity, setQuantity] = useState(1);
   const [selectedVariantId, setSelectedVariantId] = useState<string | null>(null);
+  const [imageZoomed, setImageZoomed] = useState(false);
 
   // Reset quantity and variant when navigating to a different product
   useEffect(() => {
@@ -246,11 +247,12 @@ const ProductDetail = () => {
         <div className="grid lg:grid-cols-2 gap-6 lg:gap-10 items-start">
 
           {/* LEFT — Image Gallery */}
-          <div className="lg:sticky lg:top-20 space-y-4">
+          <div className={cn('lg:sticky lg:top-20 space-y-4', imageZoomed && 'relative z-50')}>
             <ProductImageGallery
               images={galleryImages}
               selectedVariantId={null}
               title={title}
+              onZoomChange={setImageZoomed}
             />
             {(product as any).video_url && (
               <div className="rounded-xl overflow-hidden border bg-black">
@@ -287,8 +289,8 @@ const ProductDetail = () => {
               </p>
             )}
 
-            {/* Color Variants */}
-            {variants.length > 0 && (
+            {/* Color Variants — hidden while image zoom is active so swatches don't overlap the zoom panel */}
+            {variants.length > 0 && !imageZoomed && (
               <div className="space-y-2">
                 <div className="text-sm font-medium text-foreground">
                   {lang === 'zh' ? '颜色' : lang === 'en' ? 'Color' : 'রঙ'}:{' '}

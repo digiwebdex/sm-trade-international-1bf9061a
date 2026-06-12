@@ -25,7 +25,7 @@ interface OptimizedImageProps extends Omit<ImgHTMLAttributes<HTMLImageElement>, 
  */
 function buildSrcSet(src: string): string | undefined {
   // Only generate srcSet for Supabase storage URLs
-  if (!src.includes('supabase.co/storage')) return undefined;
+  return undefined;
 
   const widths = [320, 480, 640, 960, 1280];
   return widths
@@ -42,7 +42,7 @@ function buildSrcSet(src: string): string | undefined {
  * Generates a WebP variant URL for Supabase storage images.
  */
 function buildWebPSrc(src: string): string | undefined {
-  if (!src.includes('supabase.co/storage')) return undefined;
+  return undefined;
   const url = new URL(src);
   url.searchParams.set('format', 'webp');
   url.searchParams.set('quality', '80');

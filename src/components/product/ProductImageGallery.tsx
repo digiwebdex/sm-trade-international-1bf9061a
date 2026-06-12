@@ -16,6 +16,7 @@ interface ProductImageGalleryProps {
   images: TypedImage[];
   selectedVariantId?: string | null;
   title: string;
+  onZoomChange?: (zoomed: boolean) => void;
 }
 
 const TYPE_LABELS: Record<ImageType, string> = {
@@ -28,7 +29,7 @@ const TYPE_LABELS: Record<ImageType, string> = {
 };
 
 function thumbUrl(src: string, width = 160): string {
-  if (!src || !src.includes('supabase.co/storage')) return src;
+  if (!src) return src;
   try {
     const url = new URL(src);
     url.searchParams.set('width', String(width));
@@ -44,6 +45,7 @@ const ProductImageGallery = ({
   images,
   selectedVariantId,
   title,
+  onZoomChange,
 }: ProductImageGalleryProps) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isZoomed, setIsZoomed] = useState(false);
@@ -92,6 +94,10 @@ const ProductImageGallery = ({
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
   }, [goNext, goPrev]);
+
+  useEffect(() => {
+    onZoomChange?.(isZoomed);
+  }, [isZoomed, onZoomChange]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -189,7 +195,7 @@ const ProductImageGallery = ({
       )}
 
       {/* RIGHT — Main image */}
-      <div className="flex-1 relative">
+      <div className={cn('flex-1 relative', isZoomed && 'z-50')}>
         <div
           ref={imageBoxRef}
           className="relative group aspect-square rounded-lg overflow-hidden bg-white border border-border/20"
@@ -268,7 +274,7 @@ const ProductImageGallery = ({
         {/* Amazon-style external zoom panel */}
         {isZoomed && current.url && boxSize.w > 0 && (
           <div
-            className="hidden md:block absolute top-0 left-full ml-4 rounded-lg border border-border/30 bg-white shadow-2xl overflow-hidden z-30 pointer-events-none animate-fade-in"
+            className="hidden md:block absolute top-0 left-full ml-4 rounded-lg border border-border/30 bg-white shadow-2xl overflow-hidden z-50 pointer-events-none animate-fade-in"
             style={{
               width: PANEL_SIZE,
               height: PANEL_SIZE,

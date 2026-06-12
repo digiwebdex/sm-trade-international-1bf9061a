@@ -96,6 +96,33 @@ app.get('*', (_req, res) => {
 });
 
 // ── Start ───────────────────────────────────────────────────
+
+// VPS migration: local placeholder for old Supabase remove-bg edge function.
+// This prevents admin UI from hitting a missing route after Supabase runtime removal.
+// To enable real background removal later, connect a VPS service or API key here.
+app.post('/api/remove-bg', async (req, res) => {
+  try {
+    const { product_id, image_url } = req.body || {};
+
+    if (!product_id || !image_url) {
+      return res.status(400).json({
+        error: 'product_id and image_url are required'
+      });
+    }
+
+    return res.status(501).json({
+      error: 'Background removal is not configured on VPS yet',
+      message: 'Supabase remove-bg function was removed during VPS migration. Configure a local/background-removal provider to enable this feature.',
+      product_id,
+      image_url
+    });
+  } catch (error) {
+    console.error('Remove background route error:', error);
+    return res.status(500).json({ error: 'Remove background failed' });
+  }
+});
+
+
 app.listen(PORT, '0.0.0.0', () => {
   const dbHost = process.env.DB_HOST || 'localhost';
   const dbPort = parseInt(process.env.DB_PORT || '5440', 10);
