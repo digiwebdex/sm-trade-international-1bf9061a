@@ -1,0 +1,1 @@
+import{Z as a,j as e,ab as n}from"./index-B9_ISgs8.js";const o=({children:r})=>{const{user:s,loading:t}=a();return t?e.jsx("div",{className:"min-h-screen flex items-center justify-center",children:e.jsx("div",{className:"animate-spin rounded-full h-8 w-8 border-b-2 border-sm-red"})}):s?e.jsx(e.Fragment,{children:r}):e.jsx(n,{to:"/admin/login",replace:!0})};export{o as default};
