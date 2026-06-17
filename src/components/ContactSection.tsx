@@ -47,6 +47,16 @@ const FALLBACK: ContactSectionData = {
   offices: [],
 };
 
+const BANANI_MAP_URL = 'https://maps.app.goo.gl/7sX8FaU6j7Ti63KK8';
+const SAVAR_MAP_URL = 'https://www.google.com/maps/search/?api=1&query=Savar+Bazar+Bus+Stand+Dhaka+1340';
+
+function resolveLineHref(cardTitle: string, value: string, href: string): string {
+  if (href) return href;
+  if (cardTitle === 'Banani Office' && value.includes('Banani, Dhaka-1213')) return BANANI_MAP_URL;
+  if (cardTitle === 'Savar Office' && value.includes('Savar, Dhaka-1340')) return SAVAR_MAP_URL;
+  return '';
+}
+
 const ContactSection = () => {
   const { toast } = useToast();
 
@@ -203,22 +213,29 @@ const ContactSection = () => {
                     {card.title}
                   </h3>
                   <div className="space-y-1.5 text-sm text-foreground/80 leading-relaxed">
-                    {card.lines.map((l, i) => (
+                    {card.lines.map((l, i) => {
+                      const lineHref = resolveLineHref(card.title, l.value, l.href);
+                      return (
                       <div key={i} className="flex items-baseline gap-2">
                         {l.label && (
                           <span className="text-[11px] uppercase tracking-wider text-muted-foreground font-semibold shrink-0 w-20">
                             {l.label}
                           </span>
                         )}
-                        {l.href ? (
-                          <a href={l.href} className="hover:underline font-medium" style={{ color: GREEN }}>
+                        {lineHref ? (
+                          <a href={lineHref} target="_blank" rel="noopener noreferrer" className="hover:underline font-medium" style={{ color: GREEN }}>
                             {l.value}
                           </a>
                         ) : (
-                          <span className="font-medium">{l.value}</span>
+                          <span
+                            className="font-medium"
+                            style={l.value.trim() === 'Friday: Holiday' ? { color: '#dc2626' } : undefined}
+                          >
+                            {l.value}
+                          </span>
                         )}
                       </div>
-                    ))}
+                    );})}
                   </div>
                 </div>
               );
